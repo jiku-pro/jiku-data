@@ -91,8 +91,14 @@ class _Dataset(metaclass=ABCMeta):
 	def ismultivariate(self):
 		return not self.isunivariate
 	@property
+	def ismv(self):
+		return self.ismultivariate
+	@property
 	def isunivariate(self):
 		return (self.y.ndim - self.dim) == 1
+	@property
+	def isuv(self):
+		return self.isunivariate
 
 	@property
 	def links(self):

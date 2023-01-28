@@ -65,6 +65,9 @@ class SPM1DParameters(object):
 	def ikwargs(self):
 		return self.inference_kwargs
 	@property
+	def isrm(self):
+		return self.testname.endswith('rm')
+	@property
 	def test_description(self):
 		return descriptions[ self.testname ]
 	
