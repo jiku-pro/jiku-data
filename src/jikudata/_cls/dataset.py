@@ -136,9 +136,16 @@ class _Dataset(metaclass=ABCMeta):
 		return self.params.get_exec_str(self)
 	
 
-	def open_link(self):   # open link in default web browser
+	def open_links(self):   # open link in default web browser
 		import webbrowser
-		webbrowser.open(self.www, new=0, autoraise=True)
+		if isinstance(self.www, str):
+			webbrowser.open(self.www, new=0, autoraise=True)
+		elif isinstance(self.www, (tuple,list)):
+			for s in self.www:
+				webbrowser.open(s, new=0, autoraise=True)
+		elif isinstance(self.www, dict):
+			for s in self.www.values():
+				webbrowser.open(s, new=0, autoraise=True)
 	
 	
 	def print_verbose(self):
