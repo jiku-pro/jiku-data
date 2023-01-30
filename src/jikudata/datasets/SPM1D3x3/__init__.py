@@ -5,25 +5,25 @@ from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
 
 
 
-class Satisfaction(_Dataset):
+class SPM1D3x3(_Dataset):
 	
 	def _set_attrs(self):
 		self.datafile   = os.path.join(  os.path.dirname( __file__ ), 'data.csv'  )
-		self.www        = 'http://www2.webster.edu/~woolflm/8canswer.html'
+		self.www        = 'None'
 		
 	def _set_expected(self):
-		z             = (16.36, 49.09, 0.0)
-		df            = ((1, 24), (2, 24), (2, 24))
-		p             = (0.00047, 3.3e-09, 1.0)
+		z             = (0.204, 0.04, 1.832)
+		df            = ((2, 12), (2, 24), (4, 24))
+		p             = (0.819, 0.961, 0.156)
 		e             = ExpectedResultsList('F', z, df, p)
-		e.tol.z       = 0.01
+		e.tol.z       = 0.001
 		e.tol.df      = 1e-05
-		e.tol.p       = 1e-05
+		e.tol.p       = 0.001
 		self.expected = e	
-	
+
 	def _set_params(self):
 		self.params                  = SPM1DParameters()
-		self.params.testname         = 'anova2'
+		self.params.testname         = 'anova2onerm'
 		self.params.args             = self.y, self.x
 		self.params.inference_args   = (0.05,)
 		self.params.inference_kwargs = dict(method='param')

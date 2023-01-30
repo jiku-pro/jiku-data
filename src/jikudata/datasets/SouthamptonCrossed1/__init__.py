@@ -5,22 +5,22 @@ from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
 
 
 
-class Satisfaction(_Dataset):
+class SouthamptonCrossed1(_Dataset):
 	
 	def _set_attrs(self):
 		self.datafile   = os.path.join(  os.path.dirname( __file__ ), 'data.csv'  )
-		self.www        = 'http://www2.webster.edu/~woolflm/8canswer.html'
+		self.www        = 'https://www.southampton.ac.uk/~cpd/anovas/datasets/Doncaster&Davey%20-%20Model%203_1%20Two%20factor%20fully%20cross%20factored.txt'
 		
 	def _set_expected(self):
-		z             = (16.36, 49.09, 0.0)
-		df            = ((1, 24), (2, 24), (2, 24))
-		p             = (0.00047, 3.3e-09, 1.0)
+		z             = (37.23, 9.16, 9.31)
+		df            = ((2, 18), (1, 18), (2, 18))
+		p             = (4.016e-07, 0.007, 0.002)
 		e             = ExpectedResultsList('F', z, df, p)
 		e.tol.z       = 0.01
 		e.tol.df      = 1e-05
-		e.tol.p       = 1e-05
+		e.tol.p       = 0.001
 		self.expected = e	
-	
+
 	def _set_params(self):
 		self.params                  = SPM1DParameters()
 		self.params.testname         = 'anova2'
