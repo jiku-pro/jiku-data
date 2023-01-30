@@ -1,5 +1,5 @@
 
-from .. util import DisplayParams, array2shortstr, dflist2str, tuple2str
+from .. util import DisplayParams, array2shortstr, dflist2str, tuple2str, possiblytuple2str
 
 
 class Tolerance(object):  # absolite tolerance (for unit tests)
@@ -44,9 +44,9 @@ class ExpectedResults(object):
 	def asstr(self, indent=0, verbose=True):
 		dp      = DisplayParams( self, default_header=True )
 		dp.add( 'STAT' )
-		dp.add( 'z', fmt='%.5f' )
+		dp.add( 'z', fmt=possiblytuple2str )
 		dp.add( 'df', fmt=dflist2str )
-		dp.add( 'p', fmt='%.5f' )
+		dp.add( 'p', fmt=possiblytuple2str )
 		if verbose:
 			dp.addcls( 'tol' )
 		return dp.asstr(indent=indent)[:-1]
@@ -67,7 +67,22 @@ class ExpectedResults(object):
 		s += f'   p  = {self.p}, {results.p}\n'
 		print(s)
 		
+
+class ExpectedResultsList(list):
 	
+	def __init__(self, STAT, z, v, p):
+		super().__init__()
+		self.tol      = Tolerance()
+		for zz,vv,pp in zip(z, v, p):
+			e      = ExpectedResults()
+			e.STAT = STAT
+			e.z    = zz
+			e.df   = vv
+			e.p    = pp
+			self.append( e )
+			
+	def asstr(self, indent=None, verbose=None):
+		return f'[List of {len(self)} ExpectedResults objects]'
 	
 
 class Tolerance1D(object):  # absolite tolerance (for unit tests)
@@ -163,3 +178,6 @@ class ExpectedResults1DList(list):
 	def __init__(self):
 		super().__init__()
 		self.tol      = Tolerance1D()
+		
+	def asstr(self, indent=None, verbose=None):
+		return f'[List of {len(self)} ExpectedResults1D objects]'

@@ -18,8 +18,12 @@ def df2str(v):
 
 
 def dflist2str(v):
-	s0,s1 = df2str(v[0]), df2str(v[1])
-	return f'({s0}, {s1})'
+	if isinstance(v[0], (tuple,list)):
+		s     = ', '.join( [dflist2str(vv) for vv in v] )
+	else:
+		s0,s1 = df2str(v[0]), df2str(v[1])
+		s     = f'({s0}, {s1})'
+	return s
 
 
 def largeint2str(x, mx=1e9):
@@ -50,6 +54,13 @@ def plist2stringlist(plist):
 			s[i]  = 'p' + ss
 		else:
 			s[i]  = 'p=' + ss
+	return s
+
+def possiblytuple2str(x):
+	if isinstance(x, (tuple,list)):
+		s = tuple2str(x, '%.5f')
+	else:
+		s = '%.5f' %x
 	return s
 
 

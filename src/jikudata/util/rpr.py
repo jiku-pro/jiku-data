@@ -46,6 +46,10 @@ class DisplayParams(list):
 				elif callable(v):
 					x  = getattr(self.obj, k)
 					ss = f'    {k:<{n}} : {v(x)}'
+				else:
+					x  = getattr(self.obj, k)
+					if isinstance(x, (tuple,list)):
+						ss = '(' + ','.join(x) + ')'
 			else:
 				k   = a
 				v   = getattr(self.obj, k)
