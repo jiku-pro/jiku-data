@@ -5,16 +5,15 @@ from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
 
 
 
-class SPM1D4x4(_Dataset):
+class Syn0D_ANOVA2ONERM_3x4(_Dataset):
 	
 	def _set_attrs(self):
-		self.datafile   = os.path.join(  os.path.dirname( __file__ ), 'data.csv'  )
-		self.www        = 'None'
+		self.www        = None
 		
 	def _set_expected(self):
-		z             = (1.139, 0.193, 0.773)
-		df            = ((3, 76), (3, 228), (9, 228))
-		p             = (0.339, 0.901, 0.641)
+		z             = (1.013, 0.731, 0.757)
+		df            = ((2, 27), (3, 81), (6, 81))
+		p             = (0.377, 0.536, 0.606)
 		e             = ExpectedResultsList('F', z, df, p)
 		e.tol.z       = 0.001
 		e.tol.df      = 1e-05

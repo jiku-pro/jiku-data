@@ -5,11 +5,10 @@ from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
 
 
 
-class SPM1D3x5(_Dataset):
+class Syn0D_ANOVA2ONERM_3x5(_Dataset):
 	
 	def _set_attrs(self):
-		self.datafile   = os.path.join(  os.path.dirname( __file__ ), 'data.csv'  )
-		self.www        = 'None'
+		self.www        = None
 		
 	def _set_expected(self):
 		z             = (1.806, 0.678, 0.799)
