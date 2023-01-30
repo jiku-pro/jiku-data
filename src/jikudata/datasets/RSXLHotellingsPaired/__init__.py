@@ -1,0 +1,31 @@
+
+import os
+import numpy as np
+from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
+
+
+
+class RSXLHotellingsPaired(_Dataset):
+	
+	def _set_attrs(self):
+		self.www        = 'https://www.real-statistics.com/multivariate-statistics/hotellings-t-square-statistic/paired-sample-hotellings-t-square/'
+		
+	def _set_expected(self):
+		e             = ExpectedResults()
+		e.STAT        = 'T2'
+		e.z           = 53.92482
+		e.df          = (5, 24)
+		e.p           = 0.000133
+		e.tol.z       = 1e-05
+		e.tol.df      = 1e-05
+		e.tol.p       = 1e-06
+		self.expected = e
+		
+	def _set_params(self):
+		self.params                  = SPM1DParameters()
+		self.params.testname         = 'hotellings_paired'
+		self.params.args             = self.y, self.x
+		self.params.inference_args   = (0.05,)
+		self.params.inference_kwargs = dict(method='param')
+
+
