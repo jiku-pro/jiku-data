@@ -8,6 +8,7 @@ from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
 class Southampton3tworm(_Dataset):
 	
 	def _set_attrs(self):
+		self.cite       = 'Doncaster, C. P. & Davey, A. J. H. (2007) Analysis of Variance and Covariance: How to Choose and Construct Models for the Life Sciences. Cambridge: Cambridge University Press.'
 		self.www        = 'https://www.southampton.ac.uk/~cpd/anovas/datasets/Doncaster&Davey%20-%20Model%206_5%20Three%20factor%20model%20with%20RM%20on%20two%20cross%20factors.txt'
 		
 	def _set_expected(self):

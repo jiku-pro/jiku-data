@@ -8,7 +8,6 @@ from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
 class ConstructionUnequalSampleSizes(_Dataset):
 	
 	def _set_attrs(self):
-		self.datafile   = os.path.join(  os.path.dirname( __file__ ), 'data.csv'  )
 		self.www        = 'https://stackoverflow.com/questions/8320603/how-to-do-one-way-anova-in-r-with-unequal-sample-sizes'
 		
 	def _set_expected(self):

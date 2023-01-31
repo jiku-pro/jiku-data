@@ -8,7 +8,7 @@ from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
 class RSUnequalSampleSizes(_Dataset):
 	
 	def _set_attrs(self):
-		self.datafile   = os.path.join(  os.path.dirname( __file__ ), 'data.csv'  )
+		
 		self.www        = 'https://real-statistics.com/wp-content/uploads/2020/09/one-way-anova-unbalanced.png'
 		
 	def _set_expected(self):

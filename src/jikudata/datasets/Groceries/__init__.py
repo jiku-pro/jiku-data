@@ -8,7 +8,6 @@ from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
 class Groceries(_Dataset):
 	
 	def _set_attrs(self):
-		self.datafile   = os.path.join(  os.path.dirname( __file__ ), 'data.csv'  )
 		self.www        = 'https://ww2.coastal.edu/kingw/statistics/R-tutorials/repeated.html'
 		
 	def _set_expected(self):

@@ -4,12 +4,18 @@ import numpy as np
 from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
 
 
+_notes = '''
+Originally accessed from the following link (unavailable as of 2023-01-30):
+http://www.pearsonhighered.com/assets/hip/gb/uploads/Mayers_IntroStatsSPSS_Ch14.pdf
+
+Results verified in MATLAB using manova1
+'''
 
 class AnimalDepression(_Dataset):
 	
 	def _set_attrs(self):
 		self.www        = None
-		self.notes      = 'Originally accessed from the following link (unavailable as of Jan. 2023): http://www.pearsonhighered.com/assets/hip/gb/uploads/Mayers_IntroStatsSPSS_Ch14.pdf'
+		self.notes      = _notes
 		
 	def _set_expected(self):
 		e             = ExpectedResults()

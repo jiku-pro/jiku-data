@@ -8,7 +8,7 @@ from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
 class QIMacros(_Dataset):
 	
 	def _set_attrs(self):
-		self.datafile   = os.path.join(  os.path.dirname( __file__ ), 'data.csv'  )
+		
 		self.www        = 'https://www.qimacros.com/hypothesis-testing/anova-two-way-nested-excel/'
 		
 	def _set_expected(self):

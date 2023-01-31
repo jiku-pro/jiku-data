@@ -8,7 +8,6 @@ from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
 class Santa23(_Dataset):
 	
 	def _set_attrs(self):
-		self.datafile   = os.path.join(  os.path.dirname( __file__ ), 'data.csv'  )
 		self.www        = 'https://www.statisticshell.com/docs/mixed.pdf'
 		
 	def _set_expected(self):

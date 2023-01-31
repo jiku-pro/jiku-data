@@ -9,7 +9,7 @@ from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
 class RSWeightReduction(_Dataset):
 	
 	def _set_attrs(self):
-		self.datafile   = os.path.join(  os.path.dirname( __file__ ), 'data.csv'  )
+		
 		self.www        = 'https://www.real-statistics.com/students-t-distribution/one-sample-t-test/'
 		
 	def _set_expected(self):

@@ -9,7 +9,6 @@ from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
 class Trees(_Dataset):
 	
 	def _set_attrs(self):
-		self.datafile   = os.path.join(  os.path.dirname( __file__ ), 'data.csv'  )
 		self.www        = 'https://www.r-bloggers.com/2021/07/how-to-do-a-simple-linear-regression-in-r/'
 		self.notes      = 'R dataset:  "data(trees)"; only first two columns ("Girth" and "Height" included in attached data file)'
 		

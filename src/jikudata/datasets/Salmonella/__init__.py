@@ -9,7 +9,7 @@ from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
 class Salmonella(_Dataset):
 	
 	def _set_attrs(self):
-		self.datafile   = os.path.join(  os.path.dirname( __file__ ), 'data.csv'  )
+		
 		self.www        = 'https://github.com/vaitybharati/P17.-Hypothesis-Testing-1-Sample-1-Tail-Test-Salmonella-Outbreak-'
 		
 	def _set_data(self):
