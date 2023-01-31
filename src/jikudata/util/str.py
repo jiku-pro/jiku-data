@@ -6,7 +6,11 @@ Utility functions (string)
 
 
 def array2shortstr(a):
-	return f'{a.shape} array'
+	if isinstance(a, (int,float)):
+		s = str(a)
+	else:
+		s = f'{a.shape} array' 
+	return s
 
 
 def arraytuple2str(aa):

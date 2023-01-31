@@ -72,6 +72,7 @@ class ExpectedResultsList(list):
 	
 	def __init__(self, STAT, z, v, p):
 		super().__init__()
+		self.STAT     = 'F'
 		self.tol      = Tolerance()
 		for zz,vv,pp in zip(z, v, p):
 			e      = ExpectedResults()
@@ -177,6 +178,7 @@ class ExpectedResults1DList(list):
 	
 	def __init__(self):
 		super().__init__()
+		self.STAT     = 'F'
 		self.tol      = Tolerance1D()
 		
 	def asstr(self, indent=None, verbose=None):
