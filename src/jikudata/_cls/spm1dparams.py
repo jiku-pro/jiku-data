@@ -87,10 +87,13 @@ class SPM1DParameters(object):
 		s.append(  'ikwargs = dataset.params.ikwargs')
 		s.append( f'spmi    = {self.packageroot}.{self.testname}(*args, **kwargs).inference(*iargs, **ikwargs)')
 		s.append( '' )
-		s.append( 'plt.figure()' )
-		s.append( 'ax = plt.axes()' )
-		s.append( 'spmi.plot( ax=ax )')
-		s.append( 'plt.show()')
+		if dataset.dim==0:
+			s.append( 'print( spmi )' )
+		elif dataset.dim==1:
+			s.append( 'plt.figure()' )
+			s.append( 'ax = plt.axes()' )
+			s.append( 'spmi.plot( ax=ax )')
+			s.append( 'plt.show()')
 		if not aslist:
 			s = '\n'.join( s )
 		return s
