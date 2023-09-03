@@ -29,4 +29,4 @@ class Random(_Dataset):
 		self.params.testname         = 'ttest'
 		self.params.args             = self.y, self.x
 		self.params.inference_args   = (0.05,)
-		self.params.inference_kwargs = dict(method='rft')
+		self.params.inference_kwargs = dict(method='rft', dirn=1)
