@@ -40,7 +40,7 @@ descriptions = {
 class SPM1DParameters(object):
 	def __init__(self):
 		self.packagename      = 'spm1d'
-		self.packageroot      = 'spm1d.stats._a'
+		self.packageroot      = 'spm1d.stats.c'
 		self.testname         = None   # spm1d.stats function name
 		self.args             = ()
 		self.kwargs           = {}
@@ -100,8 +100,8 @@ class SPM1DParameters(object):
 		
 	
 	def get_function(self):
-		import spm1d.stats._a
-		return eval(  f'spm1d.stats._a.{self.testname}' )
+		import spm1d.stats.c
+		return eval(  f'spm1d.stats.c.{self.testname}' )
 	
 	def run(self, kwargs={}, ikwargs={}):
 		fn = self.get_function()
