@@ -16,3 +16,16 @@ def iter_all():
 	for s in __all__:
 		dataset = eval( f'{s}()' )
 		yield dataset
+		
+		
+def iter_by_testname(name):
+	for d in iter_all():
+		if d.params.testname == name:
+			yield( d )
+			
+			
+def get_datasetnames_by_testname(name):
+	dsnames = []
+	for d in iter_by_testname(name):
+		dsnames.append( d.name )
+	return dsnames
