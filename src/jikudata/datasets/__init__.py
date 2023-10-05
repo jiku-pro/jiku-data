@@ -18,14 +18,17 @@ def iter_all():
 		yield dataset
 		
 		
-def iter_by_testname(name):
+def iter_by_testname(name, dim=None):
 	for d in iter_all():
 		if d.params.testname == name:
-			yield( d )
+			if dim is None:
+				yield( d )
+			elif d.dim == dim:
+				yield( d )
 			
 			
-def get_datasetnames_by_testname(name):
+def get_datasetnames_by_testname(name, dim=None):
 	dsnames = []
-	for d in iter_by_testname(name):
+	for d in iter_by_testname(name, dim):
 		dsnames.append( d.name )
 	return dsnames
