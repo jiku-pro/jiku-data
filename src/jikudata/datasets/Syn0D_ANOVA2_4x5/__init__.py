@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsListSPM1D, SPM1DParameters
 
 
 
@@ -14,7 +14,7 @@ class Syn0D_ANOVA2_4x5(_Dataset):
 		z             = (1.423, 1.616, 0.871)
 		df            = ((3, 180), (4, 180), (12, 180))
 		p             = (0.238, 0.172, 0.577)
-		e             = ExpectedResultsList('F', z, df, p)
+		e             = ExpectedResultsListSPM1D('F', z, df, p)
 		e.tol.z       = 0.001
 		e.tol.df      = 1e-05
 		e.tol.p       = 0.001

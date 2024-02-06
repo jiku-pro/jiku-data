@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsListSPM1D, SPM1DParameters
 
 
 
@@ -15,7 +15,7 @@ class RSXLDrug(_Dataset):
 		z             = (8.301316, 114.6323, 2.164584)
 		df            = ((2, 18), (4, 72), (8, 72))
 		p             = (0.002789, 1.91e-30, 0.040346)
-		e             = ExpectedResultsList('F', z, df, p)
+		e             = ExpectedResultsListSPM1D('F', z, df, p)
 		e.tol.z       = 0.0001
 		e.tol.df      = 1e-05
 		e.tol.p       = 1e-06

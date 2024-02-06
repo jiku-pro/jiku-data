@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsSPM1D, SPM1DParameters
 
 
 class Southampton1(_Dataset):
@@ -11,7 +11,7 @@ class Southampton1(_Dataset):
 		self.www        = 'https://www.southampton.ac.uk/~cpd/anovas/datasets/Doncaster&Davey%20-%20Model%201_1%20One%20factor.txt'
 		
 	def _set_expected(self):
-		e             = ExpectedResults()
+		e             = ExpectedResultsSPM1D()
 		e.STAT        = 'F'
 		e.z           = 17.08
 		e.df          = (2, 21)

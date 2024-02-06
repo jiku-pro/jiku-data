@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsListSPM1D, SPM1DParameters
 
 
 
@@ -15,7 +15,7 @@ class QIMacros(_Dataset):
 		z             = (0.111, 45.726)
 		df            = ((1, 6), (6, 24))
 		p             = (0.750, 0.0)
-		e             = ExpectedResultsList('F', z, df, p)
+		e             = ExpectedResultsListSPM1D('F', z, df, p)
 		e.tol.z       = 0.001
 		e.tol.df      = 1e-05
 		e.tol.p       = 0.001

@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsSPM1D, SPM1DParameters
 
 
 
@@ -11,7 +11,7 @@ class RSXLHotellingsPaired(_Dataset):
 		self.www        = 'https://www.real-statistics.com/multivariate-statistics/hotellings-t-square-statistic/paired-sample-hotellings-t-square/'
 		
 	def _set_expected(self):
-		e             = ExpectedResults()
+		e             = ExpectedResultsSPM1D()
 		e.STAT        = 'T2'
 		e.z           = 53.92482
 		e.df          = (5, 24)

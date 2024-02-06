@@ -22,12 +22,14 @@ def df2str(v):
 
 
 def dflist2str(v):
-	if isinstance(v[0], (tuple,list)):
-		s     = ', '.join( [dflist2str(vv) for vv in v] )
-	else:
-		s0,s1 = df2str(v[0]), df2str(v[1])
-		s     = f'({s0}, {s1})'
-	return s
+    if v is None:
+        s = 'None'
+    elif isinstance(v[0], (tuple,list)):
+        s     = ', '.join( [dflist2str(vv) for vv in v] )
+    else:
+        s0,s1 = df2str(v[0]), df2str(v[1])
+        s     = f'({s0}, {s1})'
+    return s
 
 
 def largeint2str(x, mx=1e9):
@@ -61,11 +63,13 @@ def plist2stringlist(plist):
 	return s
 
 def possiblytuple2str(x):
-	if isinstance(x, (tuple,list)):
-		s = tuple2str(x, '%.5f')
-	else:
-		s = '%.5f' %x
-	return s
+    if x is None:
+        s = 'None '
+    elif isinstance(x, (tuple,list)):
+        s = tuple2str(x, '%.5f')
+    else:
+        s = '%.5f' %x
+    return s
 
 
 def resels2str(resels):

@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsSPM1D, SPM1DParameters
 
 
 
@@ -11,7 +11,7 @@ class Groceries(_Dataset):
 		self.www        = 'https://ww2.coastal.edu/kingw/statistics/R-tutorials/repeated.html'
 		
 	def _set_expected(self):
-		e             = ExpectedResults()
+		e             = ExpectedResultsSPM1D()
 		e.STAT        = 'F'
 		e.z           = 4.344
 		e.df          = (3, 27)

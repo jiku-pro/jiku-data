@@ -1,5 +1,5 @@
 
 from . dataset import _Dataset
-from . results import ExpectedResults, ExpectedResultsList
-from . results import ExpectedResults1D, ExpectedResults1DList
-from . spm1dparams import SPM1DParameters
+from . results import ExpectedResultsSPM1D, ExpectedResultsListSPM1D
+from . results import ExpectedResultsSPM1D_1D, ExpectedResultsListSPM1D_1D
+from . params import Parameters, SPM1DParameters

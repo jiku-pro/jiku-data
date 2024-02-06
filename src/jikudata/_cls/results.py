@@ -19,7 +19,7 @@ class Tolerance(object):  # absolite tolerance (for unit tests)
 		return dp.asstr(indent=indent)
 
 
-class ExpectedResults(object):
+class ExpectedResultsSPM1D(object):
 	
 	def __init__(self):
 		self.dim  = 0
@@ -67,14 +67,14 @@ class ExpectedResults(object):
 		print(s)
 		
 
-class ExpectedResultsList(list):
+class ExpectedResultsListSPM1D(list):
 	
 	def __init__(self, STAT, z, v, p):
 		super().__init__()
 		self.STAT     = 'F'
 		self.tol      = Tolerance()
 		for zz,vv,pp in zip(z, v, p):
-			e      = ExpectedResults()
+			e      = ExpectedResultsSPM1D()
 			e.STAT = STAT
 			e.z    = zz
 			e.df   = vv
@@ -113,7 +113,7 @@ class Tolerance1D(object):  # absolite tolerance (for unit tests)
 		dp.add( 'cluster_p' )
 		return dp.asstr(indent=indent)
 
-class ExpectedResults1D(ExpectedResults):
+class ExpectedResultsSPM1D_1D(ExpectedResultsSPM1D):
 	
 	def __init__(self):
 		self.dim      = 1
@@ -181,7 +181,7 @@ class ExpectedResults1D(ExpectedResults):
 		print(s)
 
 
-class ExpectedResults1DList(list):
+class ExpectedResultsListSPM1D_1D(list):
 	
 	def __init__(self):
 		super().__init__()

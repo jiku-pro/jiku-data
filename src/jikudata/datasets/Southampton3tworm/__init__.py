@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsListSPM1D, SPM1DParameters
 
 
 
@@ -15,7 +15,7 @@ class Southampton3tworm(_Dataset):
 		z             = (44.34, 0.01, 1.1, 5.21, 0.47, 1.04, 2.33)
 		df            = ((2, 3), (1, 3), (1, 3), (2, 3), (2, 3), (1, 3), (2, 3))
 		p             = (0.006, 0.921, 0.371, 0.106, 0.666, 0.383, 0.245)
-		e             = ExpectedResultsList('F', z, df, p)
+		e             = ExpectedResultsListSPM1D('F', z, df, p)
 		e.tol.z       = 0.01
 		e.tol.df      = 1e-05
 		e.tol.p       = 0.001

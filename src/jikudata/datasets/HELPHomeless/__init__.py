@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsSPM1D, SPM1DParameters
 
 
 
@@ -11,7 +11,7 @@ class HELPHomeless(_Dataset):
 		self.www        = 'https://sas-and-r.blogspot.jp/2010/05/example-737-calculation-of-hotellings.html'
 		
 	def _set_expected(self):
-		e             = ExpectedResults()
+		e             = ExpectedResultsSPM1D()
 		e.STAT        = 'T2'
 		e.z           = 6.132267
 		e.df          = (3, 451)

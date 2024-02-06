@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsSPM1D, SPM1DParameters
 # from ... io import load_csv
 
 
@@ -13,7 +13,7 @@ class RSWeightReduction(_Dataset):
 		self.www        = 'https://www.real-statistics.com/students-t-distribution/one-sample-t-test/'
 		
 	def _set_expected(self):
-		e             = ExpectedResults()
+		e             = ExpectedResultsSPM1D()
 		e.STAT        = 'T'
 		e.z           = 1.449255
 		e.df          = 1, 11

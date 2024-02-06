@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsSPM1D, SPM1DParameters
 
 
 
@@ -12,7 +12,7 @@ class RSUnequalSampleSizes(_Dataset):
 		self.www        = 'https://real-statistics.com/wp-content/uploads/2020/09/one-way-anova-unbalanced.png'
 		
 	def _set_expected(self):
-		e             = ExpectedResults()
+		e             = ExpectedResultsSPM1D()
 		e.STAT        = 'F'
 		e.z           = 5.864845
 		e.df          = (3, 38)

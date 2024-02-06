@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsSPM1D, SPM1DParameters
 
 
 
@@ -12,7 +12,7 @@ class RSRegression(_Dataset):
 		self.www        = 'https://www.real-statistics.com/regression/hypothesis-testing-significance-regression-line-slope/'
 		
 	def _set_expected(self):
-		e             = ExpectedResults()
+		e             = ExpectedResultsSPM1D()
 		e.STAT        = 'T'
 		e.z           = -3.67092
 		e.df          = (1, 13)

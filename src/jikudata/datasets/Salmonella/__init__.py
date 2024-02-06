@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsSPM1D, SPM1DParameters
 # from ... io import load_csv
 
 
@@ -17,7 +17,7 @@ class Salmonella(_Dataset):
 		self.x          = 0.3  # mu (hypothesized value)
 		
 	def _set_expected(self):
-		e             = ExpectedResults()
+		e             = ExpectedResultsSPM1D()
 		e.STAT        = 'T'
 		e.z           = 2.2050588385131595
 		e.df          = 1, 8

@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsListSPM1D, SPM1DParameters
 
 
 
@@ -15,7 +15,7 @@ class Southampton2onerm(_Dataset):
 		z             = (48.17, 0.01, 5.41)
 		df            = ((2, 9), (1, 9), (2, 9))
 		p             = (2e-05, 0.915, 0.029)
-		e             = ExpectedResultsList('F', z, df, p)
+		e             = ExpectedResultsListSPM1D('F', z, df, p)
 		e.tol.z       = 0.01
 		e.tol.df      = 1e-05
 		e.tol.p       = 0.001

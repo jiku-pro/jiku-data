@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsListSPM1D, SPM1DParameters
 
 
 
@@ -15,7 +15,7 @@ class SouthamptonCrossed1(_Dataset):
 		z             = (37.23, 9.16, 9.31)
 		df            = ((2, 18), (1, 18), (2, 18))
 		p             = (4.016e-07, 0.007, 0.002)
-		e             = ExpectedResultsList('F', z, df, p)
+		e             = ExpectedResultsListSPM1D('F', z, df, p)
 		e.tol.z       = 0.01
 		e.tol.df      = 1e-05
 		e.tol.p       = 0.001

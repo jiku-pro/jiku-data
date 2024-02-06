@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsSPM1D, SPM1DParameters
 
 
 
@@ -12,7 +12,7 @@ class RSXLHotellings1(_Dataset):
 		self.notes      = 'data are pre-subtracted from the hypothesized mean: [7, 8, 5, 7, 9]'
 		
 	def _set_expected(self):
-		e             = ExpectedResults()
+		e             = ExpectedResultsSPM1D()
 		e.STAT        = 'T2'
 		e.z           = 52.6724
 		e.df          = (5, 24)

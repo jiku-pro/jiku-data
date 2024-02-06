@@ -1,0 +1,4 @@
+numpy==1.26.3
+pytest==7.1.2
+spm1d==0.4.24
+ipython

@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsListSPM1D, SPM1DParameters
 
 
 
@@ -14,7 +14,7 @@ class RSXLTraining(_Dataset):
 		z             = (33.85228, 26.95919, 12.63227)
 		df            = ((1, 9), (2, 18), (2, 18))
 		p             = (0.000254, 3.85e-06, 0.000373)
-		e             = ExpectedResultsList('F', z, df, p)
+		e             = ExpectedResultsListSPM1D('F', z, df, p)
 		e.tol.z       = 1e-05
 		e.tol.df      = 1e-05
 		e.tol.p       = 1e-06

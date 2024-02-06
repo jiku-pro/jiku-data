@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResults, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsSPM1D, SPM1DParameters
 
 
 
@@ -11,7 +11,7 @@ class FitnessClub(_Dataset):
 		self.www        = 'https://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/viewer.htm#statug_cancorr_sect020.htm'
 		
 	def _set_expected(self):
-		e             = ExpectedResults()
+		e             = ExpectedResultsSPM1D()
 		e.STAT        = 'X2'
 		e.z           = 5.1458
 		e.df          = (1, 3)

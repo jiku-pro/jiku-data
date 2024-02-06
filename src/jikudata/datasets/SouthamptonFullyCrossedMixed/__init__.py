@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResultsList, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsListSPM1D, SPM1DParameters
 
 
 
@@ -15,7 +15,7 @@ class SouthamptonFullyCrossedMixed(_Dataset):
 		z             = (38.12, 0.02, 0.99, 7.06, 0.42, 0.92, 2.06)
 		df            = ((2, 12), (1, 12), (1, 12), (2, 12), (2, 12), (1, 12), (2, 12))
 		p             = (1e-05, 0.902, 0.338, 0.009, 0.665, 0.357, 0.171)
-		e             = ExpectedResultsList('F', z, df, p)
+		e             = ExpectedResultsListSPM1D('F', z, df, p)
 		e.tol.z       = 0.01
 		e.tol.df      = 1e-05
 		e.tol.p       = 0.001
