@@ -24,8 +24,8 @@ class Besier2009muscleforces(_Dataset):
 		self.expected.tol.cluster_p         = 1e-5
 
 	def _set_params(self):
-		from ... _cls import SPM1DParameters
-		self.params                  = SPM1DParameters()
+		from ... _cls import ParametersSPM1D
+		self.params                  = ParametersSPM1D()
 		self.params.testname         = 'hotellings2'
 		self.params.args             = self.y, self.x
 		self.params.kwargs           = dict( _fwhm_method='spm1d-v04' )

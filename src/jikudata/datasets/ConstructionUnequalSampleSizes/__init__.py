@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResultsSPM1D, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsSPM1D, ParametersSPM1D
 
 
 
@@ -22,7 +22,7 @@ class ConstructionUnequalSampleSizes(_Dataset):
 		self.expected = e
 		
 	def _set_params(self):
-		self.params                  = SPM1DParameters()
+		self.params                  = ParametersSPM1D()
 		self.params.testname         = 'anova1'
 		self.params.args             = self.y, self.x
 		self.params.kwargs           = dict(equal_var=True)

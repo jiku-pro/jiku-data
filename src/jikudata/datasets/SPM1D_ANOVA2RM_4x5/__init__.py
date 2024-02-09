@@ -24,8 +24,8 @@ class SPM1D_ANOVA2RM_4x5(_Dataset):
 		self.expected.tol.cluster_p         = 1e-5
 
 	def _set_params(self):
-		from ... _cls import SPM1DParameters
-		self.params                  = SPM1DParameters()
+		from ... _cls import ParametersSPM1D
+		self.params                  = ParametersSPM1D()
 		self.params.testname         = 'anova2rm'
 		self.params.args             = self.y, self.x
 		self.params.inference_args   = (0.05,)

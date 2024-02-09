@@ -113,7 +113,7 @@ class Parameters(object):
 
 
 
-class SPM1DParameters(object):
+class ParametersSPM1D(object):
     def __init__(self):
         self.packagename      = 'spm1d'
         self.packageroot      = 'spm1d.stats.c'

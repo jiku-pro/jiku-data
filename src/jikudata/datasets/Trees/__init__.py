@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResultsSPM1D, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsSPM1D, ParametersSPM1D
 # from ... io import load_csv
 
 
@@ -24,7 +24,7 @@ class Trees(_Dataset):
 		self.expected = e
 
 	def _set_params(self):
-		self.params                  = SPM1DParameters()
+		self.params                  = ParametersSPM1D()
 		self.params.testname         = 'regress'
 		self.params.args             = self.y, self.x
 		self.params.inference_args   = (0.05,)

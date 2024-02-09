@@ -75,6 +75,11 @@ class _Dataset(metaclass=ABCMeta):
     # ----- properties -----
 
     @property
+    def _spm_version(self):
+        import spm1d
+        return int( spm1d.__version__.split('.')[1] )
+    
+    @property
     def design(self):
         return self.params.test_description
         # return self.params.description

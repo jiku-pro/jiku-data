@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResultsListSPM1D, SPM1DParameters
+from ... _cls import _Dataset, ExpectedResultsListSPM1D, ParametersSPM1D
 
 
 
@@ -22,7 +22,7 @@ class SouthamptonCrossed1(_Dataset):
 		self.expected = e	
 
 	def _set_params(self):
-		self.params                  = SPM1DParameters()
+		self.params                  = ParametersSPM1D()
 		self.params.testname         = 'anova2'
 		self.params.args             = self.y, self.x
 		self.params.inference_args   = (0.05,)
