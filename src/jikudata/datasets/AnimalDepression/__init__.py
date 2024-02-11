@@ -12,27 +12,29 @@ Results verified in MATLAB using manova1
 '''
 
 class AnimalDepression(_Dataset):
-	
-	def _set_attrs(self):
-		self.www        = None
-		self.notes      = _notes
-		
-	def _set_expected(self):
-		e             = ExpectedResultsSPM1D()
-		e.STAT        = 'X2'
-		e.z           = 23.8481
-		e.df          = (1, 4)
-		e.p           = 8.5673e-05
-		e.tol.z       = 0.0001
-		e.tol.df      = 1e-05
-		e.tol.p       = 1e-09
-		self.expected = e
-		
-	def _set_params(self):
-		self.params                  = ParametersSPM1D()
-		self.params.testname         = 'manova1'
-		self.params.args             = self.y, self.x
-		self.params.inference_args   = (0.05,)
-		self.params.inference_kwargs = dict(method='param')
 
+    def _set_attrs(self):
+        self.www        = None
+        self.notes      = _notes
+
+    def _set_expected(self):
+        e             = ExpectedResultsSPM1D()
+        e.STAT        = 'X2'
+        e.z           = 23.8481
+        e.df          = (1, 4)
+        e.p           = 8.5673e-05
+        e.tol.z       = 0.0001
+        e.tol.df      = 1e-05
+        e.tol.p       = 1e-09
+        self.expected = e
+
+    def _set_params(self):
+        self.params                  = ParametersSPM1D()
+        self.params.testname         = 'manova1'
+        self.params.args             = self.y, self.x
+        self.params.inference_args   = (0.05,)
+        if self._spm_version == 4:
+            self.params.inference_kwargs = dict()
+        else:
+            self.params.inference_kwargs = dict(method='param')
 

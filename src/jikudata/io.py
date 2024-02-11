@@ -133,10 +133,10 @@ class JikuCSVParser(object):
 
 
 def load_expected_results_1d(fpath):
-	from . _cls import ExpectedResults1D
+	from . _cls import ExpectedResultsSPM1D_1D
 	with np.load(fpath, allow_pickle=True) as d:
 		if d['z'].ndim==1:
-			e             = ExpectedResults1D()
+			e             = ExpectedResultsSPM1D_1D()
 			e.STAT        = str( d['STAT'] )
 			e.z           = d['z']
 			e.df          = tuple( d['df'] )
@@ -145,10 +145,10 @@ def load_expected_results_1d(fpath):
 			e.zc          = float( d['zc'] )
 			e.clusters    = list( d['clusters'] )
 		else:
-			from . _cls import ExpectedResults1DList
-			e             = ExpectedResults1DList()
+			from . _cls import ExpectedResultsListSPM1D_1D
+			e             = ExpectedResultsListSPM1D_1D()
 			for i in range( d['z'].shape[0] ):
-				ee            = ExpectedResults1D()
+				ee            = ExpectedResultsSPM1D_1D()
 				ee.STAT       = str( d['STAT'] )
 				ee.z          = d['z'][i]
 				ee.df         = tuple( d['df'][i] )
