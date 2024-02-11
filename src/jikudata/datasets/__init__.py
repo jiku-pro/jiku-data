@@ -5,9 +5,9 @@
 import os
 __all__ = []
 for s in sorted( os.listdir( os.path.dirname(__file__) ) ):
-	if s[0].isupper():
-		exec(  f'from . {s} import {s}' )
-		__all__.append( s )
+    if s[0].isupper():
+        exec(  f'from . {s} import {s}' )
+        __all__.append( s )
 del os, s
 
 

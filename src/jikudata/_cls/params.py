@@ -70,6 +70,9 @@ class Parameters(object):
     @property
     def test_description(self):
         return self.fn_description
+    @property
+    def testname(self):
+        return self.fn
 
 
     def get_exec_str(self, dataset, aslist=False):
@@ -104,7 +107,7 @@ class Parameters(object):
         exec(   f'import {self.packageroot}'   )
         return eval(  self.fnname )
 
-    def run(self, kwargs={}):
+    def run(self, kwargs={}, ikwargs=None):
         fn  = self.get_function()
         kwa = self.kwargs
         kwa.update( kwargs )

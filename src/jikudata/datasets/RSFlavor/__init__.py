@@ -1,7 +1,7 @@
 
 import os
 import numpy as np
-from ... _cls import _Dataset, ExpectedResultsSPM1D, ParametersSPM1D
+from ... _cls import _Dataset, ExpectedResults, ExpectedResultsSPM1D, ParametersSPM1D
 
 
 
