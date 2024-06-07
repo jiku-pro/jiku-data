@@ -7,12 +7,13 @@ from .. util import DisplayParams, array2shortstr
 class _Dataset(metaclass=ABCMeta):
 
     def __init__(self):
+        self._autotest    = True   # execute automated testing via pytest ** should be true except for in-development datasets
         self._dir0        = os.path.dirname( inspect.getfile( self.__class__) )
         self.dim          = 0      # data dimensionality
         self.x            = None   # IVs
         self.y            = None   # DV
         self.cite         = None   # literature citation (if relevant)
-        self.datafile     = os.path.join( self._dir0, 'data.csv' )   # data file path
+        self.datafile     = None   # data file path
         self.expected     = None   # expected results
         self.params       = None   # parameters for reproducing in another software package
         self.www          = None   # web source (if available)
@@ -66,10 +67,11 @@ class _Dataset(metaclass=ABCMeta):
         return self.params.get_exec_str( self, aslist=aslist )
 
     def _set_data(self):
-        from .. io import JikuCSVParser
-        parser   = JikuCSVParser( self.datafile )
-        self.y   = parser.y
-        self.x   = parser.x
+        if self.datafile is not None:
+            from .. io import JikuCSVParser
+            parser   = JikuCSVParser( self.datafile )
+            self.y   = parser.y
+            self.x   = parser.x
 
 
     # ----- properties -----

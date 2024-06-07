@@ -15,6 +15,9 @@ import jikudata as jd
 
 
 def test_all():
-	for dataset in jd.datasets.iter_all():
-		if dataset.params.testname in ['ttest', 'ttest_paired', 'ttest2', 'anova1']:
-			dataset.runtest( verbose=True )
+    for dataset in jd.datasets.iter_all():
+        if dataset._autotest:
+            if dataset.params.testname in ['ttest', 'ttest_paired', 'ttest2', 'anova1']:
+                dataset.runtest( verbose=True )
+
+# test_all()
