@@ -9,7 +9,7 @@ class DaysInHospital(_Dataset):
 
     def _set_attrs(self):
         self.www       = 'https://github.com/nipy/nipy/blob/main/nipy/algorithms/statistics/models/tests/test_anova.py'
-        self.notes     = 'nipy example dataset; originally from "Applied Linear Statistical Models" textbook
+        self.notes     = 'nipy example dataset; originally from "Applied Linear Statistical Models" textbook'
 
     def _set_expected(self):
         z             = (7.2147, 13.1210, 1.8813)
