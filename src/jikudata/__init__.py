@@ -3,7 +3,7 @@ __version__ = '0.1.1'   # 2024-02-11
 
 
 from . datasets import *
-
+from . datasets import get_datasets
 
 
 
