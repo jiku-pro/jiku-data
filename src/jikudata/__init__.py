@@ -1,5 +1,5 @@
 
-__version__ = '0.1.1'   # 2024-02-11
+__version__ = '0.1.2'   # 2025-07-10
 
 
 from . datasets import *
@@ -22,5 +22,5 @@ def link( path ):
 
 
 def get_dataset_by_name(name):
-	dataset = eval( f'{name}()' )
-	return dataset
+    dataset = eval( f'{name}()' )
+    return dataset
