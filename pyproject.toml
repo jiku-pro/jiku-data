@@ -1,6 +1,7 @@
+
 [project]
 name            = "jiku-data"
-version         = "0.1.4"
+version         = "0.1.5"
 description     = "'Open source datasets, component of Jiku Core"
 readme          = "README.md"
 requires-python = ">=3.9"
@@ -31,9 +32,6 @@ dependencies = [
 ]
 
 
-[tool.setuptools]
-package-data  = {"jikudata.datasets" = ["*.csv", "*.npz", "*.h5"]}
-
 
 [project.urls]  # Optional
 "Homepage"    = "https://github.com/jiku-pro/jiku-data"
@@ -44,5 +42,5 @@ package-data  = {"jikudata.datasets" = ["*.csv", "*.npz", "*.h5"]}
 
 
 [build-system]
-requires      = ["setuptools>=43.0.0", "wheel"]
+requires      = ["setuptools>=60", "setuptools-scm>=8.0"]
 build-backend = "setuptools.build_meta"
