@@ -1,11 +1,11 @@
 [![Python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)](https://www.python.org)
 [![Numpy](https://img.shields.io/badge/Numpy-777BB4?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-![version](https://img.shields.io/badge/version-0.1.5-blue)
+![version](https://img.shields.io/badge/version-0.1.6-blue)
 
 
 
-<img src="jiku-core.jpg" alt="Markdown Monster icon" width="800">
+<img src="https://github.com/jiku-pro/jiku-data/blob/ee4a7ccc53b7badedc14d7c93b2b40af783b4f75/jiku-core.jpg?raw=true" alt="JikuCore" width="600">
 
 # JIKU DATA
 
