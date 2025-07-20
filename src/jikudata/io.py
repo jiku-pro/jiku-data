@@ -151,6 +151,12 @@ def load_expected_results_1d(fpath):
             e.resels      = tuple( d['resels'] )
             e.zc          = float( d['zc'] )
             e.clusters    = list( d['clusters'] )
+            for c in e.clusters:
+                for k,v in c.items():
+                    if isinstance(v, tuple):
+                        c[k] = tuple( map(float, v) )
+                    else:
+                        c[k] = float(v)
         else:
             from . _cls import ExpectedResultsListSPM1D_1D
             e             = ExpectedResultsListSPM1D_1D()
