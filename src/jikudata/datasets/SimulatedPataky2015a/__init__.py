@@ -33,5 +33,6 @@ class SimulatedPataky2015a(_Dataset):
             self.params.kwargs           = dict()
             self.params.inference_kwargs = dict()
         else:
-            self.params.kwargs           = dict( _fwhm_method='spm1d-v04' )
+            # self.params.kwargs           = dict( _fwhm_method='spm1d-v04' )
+            self.params.kwargs           = dict()
             self.params.inference_kwargs = dict(method='rft')

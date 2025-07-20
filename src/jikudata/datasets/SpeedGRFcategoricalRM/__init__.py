@@ -32,5 +32,6 @@ class SpeedGRFcategoricalRM(_Dataset):
             self.params.kwargs           = dict(equal_var=True)
             self.params.inference_kwargs = dict()
         else:
-            self.params.kwargs           = dict( equal_var=True, _fwhm_method='spm1d-v04' )
+            # self.params.kwargs           = dict( equal_var=True, _fwhm_method='spm1d-v04' )
+            self.params.kwargs           = dict( equal_var=True )
             self.params.inference_kwargs = dict(method='rft')
