@@ -28,15 +28,11 @@ classifiers = [
 dependencies = [
   "numpy",
   "tables",
-  "spm1d",
 ]
 
 
 [tool.setuptools]
-    include-package-data = true
-
-[tool.setuptools.package-data]
-    jiku-data = ["*.csv", "*.npz", "*.h5"]
+package-data  = {"jikudata.datasets" = ["*.csv", "*.npz", "*.h5"]}
 
 
 [project.urls]  # Optional
