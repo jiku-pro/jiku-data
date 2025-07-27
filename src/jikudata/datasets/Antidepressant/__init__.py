@@ -25,10 +25,12 @@ class Antidepressant(_Dataset):
         self.params.testname         = 'anova2rm'
         self.params.args             = self.y, self.x
         self.params.inference_args   = (0.05,)
-        if self._spm_version == 4:
-            self.params.inference_kwargs = dict()
-        else:
-            self.params.inference_kwargs = dict(method='param')
+        self.params.inference_kwargs4 = dict()
+        self.params.inference_kwargs5 = dict(method='param')
+        # if self._spm_version == 4:
+        #     self.params.inference_kwargs = dict()
+        # else:
+        #     self.params.inference_kwargs = dict(method='param')
 
 
 

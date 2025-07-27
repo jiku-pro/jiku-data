@@ -25,14 +25,18 @@ class Pataky2014cop(_Dataset):
 
     def _set_params(self):
         from ... _cls import ParametersSPM1D
-        self.params                  = ParametersSPM1D()
-        self.params.testname         = 'hotellings_paired'
-        self.params.args             = self.y, self.x
-        self.params.inference_args   = (0.05,)
-        if self._spm_version == 4:
-            self.params.kwargs           = dict()
-            self.params.inference_kwargs = dict()
-        else:
-            # self.params.kwargs           = dict( _fwhm_method='spm1d-v04' )
-            self.params.kwargs           = dict()
-            self.params.inference_kwargs = dict(method='rft')
+        self.params                   = ParametersSPM1D()
+        self.params.testname          = 'hotellings_paired'
+        self.params.args              = self.y, self.x
+        self.params.inference_args    = (0.05,)
+        self.params.kwargs            = dict()
+        self.params.inference_kwargs4 = dict()
+        self.params.inference_kwargs5 = dict(method='rft')
+        
+        # if self._spm_version == 4:
+        #     self.params.kwargs           = dict()
+        #     self.params.inference_kwargs = dict()
+        # else:
+        #     # self.params.kwargs           = dict( _fwhm_method='spm1d-v04' )
+        #     self.params.kwargs           = dict()
+        #     self.params.inference_kwargs = dict(method='rft')

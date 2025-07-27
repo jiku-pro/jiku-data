@@ -39,13 +39,15 @@ spm1d_descriptions = {
 
 class Parameters(object):
     def __init__(self):
-        self.packagename      = None   # package name (e.g. "spm1d")
-        self.packageroot      = None   # module / subpackage root (e.g. "spm1d.stats.c")
-        self.fn               = None   # function name
-        self.args             = ()
-        self.kwargs           = {}
-        self.inference_args   = ()
-        self.inference_kwargs = {}
+        self._spm1dv           = None   # None 4 or 5
+        self.packagename       = None   # package name (e.g. "spm1d")
+        self.packageroot       = None   # module / subpackage root (e.g. "spm1d.stats.c")
+        self.fn                = None   # function name
+        self.args              = ()
+        self.kwargs            = {}
+        self.inference_args    = ()
+        self.inference_kwargs4 = {}     # inference arguments for spm1d v0.4
+        self.inference_kwargs5 = {}     # inference arguments for spm1d v0.5
 
     def __repr__(self):
         dp      = DisplayParams( self, default_header=True )
@@ -61,6 +63,17 @@ class Parameters(object):
     @property
     def iargs(self):
         return self.inference_args
+    @property
+    def inference_kwargs(self):
+        v = self._spm1dv
+        if v is None:
+            import spm1d
+            v = int( spm1d.__version__.split('.')[1] )
+        if v==4:
+            return self.inference_kwargs4
+        elif v == 5:
+            return self.inference_kwargs5
+        
     @property
     def ikwargs(self):
         return self.inference_kwargs
@@ -179,10 +192,15 @@ class ParametersSPM1D(object):
 
 
     def get_function(self):
-        import spm1d.stats.c
-        return eval(  f'spm1d.stats.c.{self.testname}' )
+        if self._spm1dv in [None, 5]:
+            import spm1d.stats.c
+            return eval(  f'spm1d.stats.c.{self.testname}' )
+        elif self._spm1dv==4:
+            import spm1d_v4.stats.c
+            return eval(  f'spm1d_v4.stats.c.{self.testname}' )
 
-    def run(self, kwargs={}, ikwargs={}):
+    def run(self, kwargs={}, ikwargs={}, spm1d_version=None):
+        self.set_spm1d_version( spm1d_version )
         fn = self.get_function()
         a0 = self.args
         k0 = self.kwargs
@@ -192,3 +210,6 @@ class ParametersSPM1D(object):
         k1.update( ikwargs )
         return fn( *a0 , **k0 ).inference(*a1, **k1)
 
+
+    def set_spm1d_version(self, v):
+        self._spm1dv = v

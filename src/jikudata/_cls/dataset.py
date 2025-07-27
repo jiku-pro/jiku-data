@@ -9,6 +9,7 @@ class _Dataset(metaclass=ABCMeta):
     def __init__(self):
         self._autotest    = True   # execute automated testing via pytest ** should be true except for in-development datasets
         self._dir0        = os.path.dirname( inspect.getfile( self.__class__) )
+        self._spm1dv      = None   # force spm1d version for v0.4 and v0.5 testing
         self.dim          = 0      # data dimensionality
         self.x            = None   # IVs
         self.y            = None   # DV
@@ -76,10 +77,10 @@ class _Dataset(metaclass=ABCMeta):
 
     # ----- properties -----
 
-    @property
-    def _spm_version(self):
-        import spm1d
-        return int( spm1d.__version__.split('.')[1] )
+    # @property
+    # def _spm_version(self):
+    #     import spm1d
+    #     return int( spm1d.__version__.split('.')[1] )
     
     @property
     def design(self):
@@ -171,8 +172,10 @@ class _Dataset(metaclass=ABCMeta):
         print( dp.asstr() )
 
 
-    def run(self, kwargs={}, ikwargs={}):
-        return self.params.run(kwargs=kwargs, ikwargs=ikwargs)
+    def run(self, kwargs={}, ikwargs={}, spm1d_version=None):
+        if spm1d_version is not None:
+            self._spm1dv = spm1d_version
+        return self.params.run(kwargs=kwargs, ikwargs=ikwargs, spm1d_version=spm1d_version)
 
 
     def runtest(self, verbose=True, kwargs={}, ikwargs={}):
