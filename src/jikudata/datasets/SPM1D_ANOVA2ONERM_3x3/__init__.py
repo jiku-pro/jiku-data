@@ -29,10 +29,14 @@ class SPM1D_ANOVA2ONERM_3x3(_Dataset):
         self.params.testname         = 'anova2onerm'
         self.params.args             = self.y, self.x
         self.params.inference_args   = (0.05,)
-        if self._spm_version == 4:
-            self.params.kwargs           = dict(equal_var=True)
-            self.params.inference_kwargs = dict()
-        else:
-            # self.params.kwargs           = dict(equal_var=True, _fwhm_method='spm1d-v04' )
-            self.params.kwargs           = dict( equal_var=True )
-            self.params.inference_kwargs = dict(method='rft')
+        self.params.kwargs            = dict(equal_var=True)
+        self.params.inference_kwargs4 = dict()
+        self.params.inference_kwargs5 = dict(method='rft')
+        
+        # if self._spm_version == 4:
+        #     self.params.kwargs           = dict(equal_var=True)
+        #     self.params.inference_kwargs = dict()
+        # else:
+        #     # self.params.kwargs           = dict(equal_var=True, _fwhm_method='spm1d-v04' )
+        #     self.params.kwargs           = dict( equal_var=True )
+        #     self.params.inference_kwargs = dict(method='rft')

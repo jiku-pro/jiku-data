@@ -18,6 +18,6 @@ def test_all():
     for dataset in jd.datasets.iter_all():
         if dataset._autotest:
             if dataset.params.testname in ['ttest', 'ttest_paired', 'ttest2', 'anova1']:
-                dataset.runtest( verbose=True )
+                dataset.runtest( verbose=True, spm1d_version=5 )
 
 # test_all()

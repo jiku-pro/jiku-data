@@ -15,8 +15,10 @@ import jikudata as jd
 dataset = jd.RSFlavor()
 # print( dataset )
 
-spm     = dataset.run( spm1d_version=None )
+# spm     = dataset.run( spm1d_version=None )
 # spm     = dataset.run( spm1d_version=4 )
 # spm     = dataset.run( spm1d_version=5 )
 
-print( spm )
+# print( spm )
+
+dataset.runtest( spm1d_version=4 )

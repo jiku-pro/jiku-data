@@ -9,7 +9,7 @@ class _Dataset(metaclass=ABCMeta):
     def __init__(self):
         self._autotest    = True   # execute automated testing via pytest ** should be true except for in-development datasets
         self._dir0        = os.path.dirname( inspect.getfile( self.__class__) )
-        self._spm1dv      = None   # force spm1d version for v0.4 and v0.5 testing
+        # self._spm1dv      = None   # force spm1d version for v0.4 and v0.5 testing
         self.dim          = 0      # data dimensionality
         self.x            = None   # IVs
         self.y            = None   # DV
@@ -173,13 +173,13 @@ class _Dataset(metaclass=ABCMeta):
 
 
     def run(self, kwargs={}, ikwargs={}, spm1d_version=None):
-        if spm1d_version is not None:
-            self._spm1dv = spm1d_version
+        # if spm1d_version is not None:
+        #     self._spm1dv = spm1d_version
         return self.params.run(kwargs=kwargs, ikwargs=ikwargs, spm1d_version=spm1d_version)
 
 
-    def runtest(self, verbose=True, kwargs={}, ikwargs={}):
-        results  = self.params.run(kwargs=kwargs, ikwargs=ikwargs)
+    def runtest(self, verbose=True, kwargs={}, ikwargs={}, spm1d_version=None):
+        results  = self.params.run(kwargs=kwargs, ikwargs=ikwargs, spm1d_version=spm1d_version)
         if isinstance(self.expected, list):
             for e,r in zip(self.expected, results):
                 e.tol = self.expected.tol
