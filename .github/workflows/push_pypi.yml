@@ -1,13 +1,23 @@
 name: push_pypi
 
+# on:
+#   push:
+#     branches: [ main ]
+
 on:
-  push:
+  workflow_run:
+    workflows: ["pytest"]
     branches: [ main ]
+    types: 
+      - completed
 
 
 jobs:
-  publish-test-pypi:
+  publish-pypi:
     runs-on: ubuntu-latest
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
     permissions:
       contents: read
       id-token: write
@@ -47,3 +57,18 @@ jobs:
     - name: Publish to pypi
       uses: pypa/gh-action-pypi-publish@release/v1
 
+
+# name: Release
+# on:
+#   workflow_run:
+#     workflows: ["Run Tests"]
+#     branches: [main]
+#     types:
+#       - completed
+
+# jobs:
+#   on-success:
+#     runs-on: ubuntu-latest
+#     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+#     steps:
+#       - run: echo 'The Run Tests workflow passed'

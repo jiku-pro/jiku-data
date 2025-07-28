@@ -28,8 +28,11 @@ class Trees(_Dataset):
         self.params.testname         = 'regress'
         self.params.args             = self.y, self.x
         self.params.inference_args   = (0.05,)
-        if self._spm_version == 4:
-            self.params.inference_kwargs = dict(two_tailed=True)
-        else:
-            self.params.inference_kwargs = dict(method='param', dirn=0)
+        self.params.inference_kwargs4 = dict(two_tailed=True)
+        self.params.inference_kwargs5 = dict(method='param', dirn=0)
+        
+        # if self._spm_version == 4:
+        #     self.params.inference_kwargs = dict(two_tailed=True)
+        # else:
+        #     self.params.inference_kwargs = dict(method='param', dirn=0)
 

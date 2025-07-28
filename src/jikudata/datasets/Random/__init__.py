@@ -25,14 +25,18 @@ class Random(_Dataset):
 
     def _set_params(self):
         from ... _cls import ParametersSPM1D
-        self.params                  = ParametersSPM1D()
-        self.params.testname         = 'ttest'
-        self.params.args             = self.y, self.x
-        self.params.inference_args   = (0.05,)
-        if self._spm_version == 4:
-            self.params.kwargs           = dict()
-            self.params.inference_kwargs = dict(two_tailed=False)
-        else:
-            # self.params.kwargs           = dict( _fwhm_method='spm1d-v04' )
-            self.params.kwargs           = dict()
-            self.params.inference_kwargs = dict(method='rft', dirn=1)
+        self.params                   = ParametersSPM1D()
+        self.params.testname          = 'ttest'
+        self.params.args              = self.y, self.x
+        self.params.inference_args    = (0.05,)
+        self.params.kwargs            = dict()
+        self.params.inference_kwargs4 = dict(two_tailed=False)
+        self.params.inference_kwargs5 = dict(method='rft', dirn=1)
+        
+        # if self._spm_version == 4:
+        #     self.params.kwargs           = dict()
+        #     self.params.inference_kwargs = dict(two_tailed=False)
+        # else:
+        #     # self.params.kwargs           = dict( _fwhm_method='spm1d-v04' )
+        #     self.params.kwargs           = dict()
+        #     self.params.inference_kwargs = dict(method='rft', dirn=1)
