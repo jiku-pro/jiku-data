@@ -12,22 +12,23 @@ class SpeedPP2D(_Dataset):
         self.www        = 'https://doi.org/10.1016/j.jbiomech.2008.03.034'
         self.notes      = None
 
-    def _set_data(self):
-        import os
-        import numpy as np
-        from ... io import loadh5
-        dir0         = os.path.dirname(__file__)
-        dir_x        = os.path.join( dir0, 'data_x' )
-        dir_y        = os.path.join( dir0, 'data_y' )
-        # set y data:
-        self.y       = np.vstack(   [loadh5(os.path.join( dir_y, f'subj{subj:03}.h5'))   for subj in range(10)]   )
-        # set x data:
-        fpath_conds  = os.path.join( dir_x, 'conditions.csv' )
-        fpath_speeds = os.path.join( dir_x, 'speeds.csv' )
-        subj         = np.hstack([[i]*60  for i in range(10)])
-        cond         = np.hstack(   np.loadtxt(fpath_conds,  delimiter=',', skiprows=1, dtype=int).T[1:]   )
-        speed        = np.hstack(   np.loadtxt(fpath_speeds, delimiter=',', skiprows=1).T[1:]   )
-        self.x       = dict(subj=subj, cond=cond, speed=speed)
+    def _set_data(self, _load_data=True):
+        if _load_data:
+            import os
+            import numpy as np
+            from ... io import loadh5
+            dir0         = os.path.dirname(__file__)
+            dir_x        = os.path.join( dir0, 'data_x' )
+            dir_y        = os.path.join( dir0, 'data_y' )
+            # set y data:
+            self.y       = np.vstack(   [loadh5(os.path.join( dir_y, f'subj{subj:03}.h5'))   for subj in range(10)]   )
+            # set x data:
+            fpath_conds  = os.path.join( dir_x, 'conditions.csv' )
+            fpath_speeds = os.path.join( dir_x, 'speeds.csv' )
+            subj         = np.hstack([[i]*60  for i in range(10)])
+            cond         = np.hstack(   np.loadtxt(fpath_conds,  delimiter=',', skiprows=1, dtype=int).T[1:]   )
+            speed        = np.hstack(   np.loadtxt(fpath_speeds, delimiter=',', skiprows=1).T[1:]   )
+            self.x       = dict(subj=subj, cond=cond, speed=speed)
 
 
     def _set_expected(self):  # expected_results.npz loaded automatically

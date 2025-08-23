@@ -6,7 +6,7 @@ from .. util import DisplayParams, array2shortstr
 
 class _Dataset(metaclass=ABCMeta):
 
-    def __init__(self):
+    def __init__(self, _load_data=True):
         self._autotest    = True   # execute automated testing via pytest ** should be true except for in-development datasets
         self._dir0        = os.path.dirname( inspect.getfile( self.__class__) )
         # self._spm1dv      = None   # force spm1d version for v0.4 and v0.5 testing
@@ -21,10 +21,11 @@ class _Dataset(metaclass=ABCMeta):
         self.notes        = None   # extra dataset details
         self.__set_datafile()
         self.__set_expected()
-        self._set_attrs()          # (abstract method)
-        self._set_data()           # (abstract method)
-        self._set_expected()       # (abstract method)
-        self._set_params()         # (abstract method)
+        self._set_attrs()               # (abstract method)
+        self._set_data( _load_data )    # (abstract method)
+        self._set_expected( ) # (abstract method)
+        # self._set_expected( _load_data) # (abstract method)
+        self._set_params()              # (abstract method)
 
 
     def __repr__(self):
@@ -67,8 +68,8 @@ class _Dataset(metaclass=ABCMeta):
     def get_exec_str(self, aslist=False):  # get executable string to reproduce expected results
         return self.params.get_exec_str( self, aslist=aslist )
 
-    def _set_data(self):
-        if self.datafile is not None:
+    def _set_data(self, _load_data=True):
+        if _load_data and (self.datafile is not None):
             from .. io import JikuCSVParser
             parser   = JikuCSVParser( self.datafile )
             self.y   = parser.y

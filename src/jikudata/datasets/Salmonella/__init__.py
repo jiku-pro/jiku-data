@@ -12,8 +12,8 @@ class Salmonella(_Dataset):
 
         self.www        = 'https://github.com/vaitybharati/P17.-Hypothesis-Testing-1-Sample-1-Tail-Test-Salmonella-Outbreak-'
 
-    def _set_data(self):
-        super()._set_data()
+    def _set_data(self, _load_data=True):
+        super()._set_data( _load_data=_load_data )
         self.x          = 0.3  # mu (hypothesized value)
 
     def _set_expected(self):

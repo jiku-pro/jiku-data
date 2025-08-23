@@ -1,9 +1,9 @@
 
-__version__ = '0.1.7'  # 2025-07-28
+__version__ = '0.1.8'  # 2025-08-24
 
 
 from . datasets import *
-from . datasets import get_datasets
+from . datasets import get_datasets, get_dataset_names
 
 
 
