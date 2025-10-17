@@ -32,6 +32,8 @@ spm1d_descriptions = {
     'normality'         : "Normality test",
     'normality_k2'      : "Normality test (D'Agostino-Pearson K2)",
     'normality_sw'      : 'Normality test (Shapiro-Wilk)',
+    
+    'normality_residuals' : "Normality test (D'Agostino-Pearson K2)",
 
 }
 

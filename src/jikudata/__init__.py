@@ -1,5 +1,5 @@
 
-__version__ = '0.1.8'  # 2025-08-24
+__version__ = '0.1.9'  # 2025-10-17
 
 
 from . datasets import *
