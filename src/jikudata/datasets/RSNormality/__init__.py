@@ -19,13 +19,13 @@ class RSNormality(_Dataset):
         e.p           = 0.56937
         e.tol.z       = 1e-05
         e.tol.df      = 1e-05
-        e.tol.p       = 1e-06
+        e.tol.p       = 1e-05
         self.expected = e
 
     def _set_params(self):
         self.params                  = ParametersSPM1D()
         self.params.testname         = 'normality'
-        self.params.args             = self.y
+        self.params.args             = self.y,
         self.params.inference_args   = (0.05,)
         self.params.inference_kwargs4 = dict()
         self.params.inference_kwargs5 = dict(method='param')
