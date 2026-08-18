@@ -31,3 +31,53 @@ jobs:
       run: |
         export PYTHONPATH="src"
         pytest tests
+
+  packaging-job:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12.7'
+
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build
+
+    - name: Build sdist and wheel
+      run: python -m build
+
+    - name: Build a wheel with no git metadata
+      # setuptools-scm acts as a file finder and quietly supplies package data
+      # whenever the build runs inside a git checkout.  Building without .git
+      # proves that [tool.setuptools.package-data] is what actually puts the
+      # datasets into the wheel.
+      run: |
+        rm -rf /tmp/nogit
+        cp -a . /tmp/nogit
+        rm -rf /tmp/nogit/.git /tmp/nogit/dist
+        cd /tmp/nogit && python -m build --wheel --outdir "$GITHUB_WORKSPACE/dist-nogit"
+
+    - name: Verify dataset payloads are present
+      run: python scripts/check_dist_contents.py dist/*.whl dist/*.tar.gz dist-nogit/*.whl
+
+    - name: Install the no-git wheel and load datasets
+      run: |
+        python -m venv /tmp/venv
+        /tmp/venv/bin/pip install --upgrade pip numpy
+        /tmp/venv/bin/pip install --no-deps dist-nogit/*.whl
+        cd /tmp && /tmp/venv/bin/python -c "
+        import jikudata as jd
+        d = jd.RSRegression()
+        assert d.y.shape == (15,), d.y.shape
+        assert d.expected.z is not None
+        n = len( jd.datasets.get_dataset_names() )
+        print( f'loaded {n} datasets from the installed wheel' )
+        assert n > 100, n
+        "
