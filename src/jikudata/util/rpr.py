@@ -42,10 +42,13 @@ class DisplayParams(list):
                     ss = f'{k}'
                 elif isinstance(v, str):
                     x  = getattr(self.obj, k)
-                    ss = f'    {k:<{n}} : {v%x}'
+                    # wrap in a 1-tuple so that tuple/list values format correctly
+                    xs = 'None' if (x is None) else (v % (x,))
+                    ss = f'    {k:<{n}} : {xs}'
                 elif callable(v):
                     x  = getattr(self.obj, k)
-                    ss = f'    {k:<{n}} : {v(x)}'
+                    xs = 'None' if (x is None) else v(x)
+                    ss = f'    {k:<{n}} : {xs}'
                 # else:
                 #     x  = getattr(self.obj, k)
                 #     if isinstance(x, (tuple,list)):
@@ -53,7 +56,7 @@ class DisplayParams(list):
             else:
                 k   = a
                 v   = getattr(self.obj, k)
-                sss = v.asstr(indent=2, verbose=self.subclassverbose)
+                sss = 'None' if (v is None) else v.asstr(indent=2, verbose=self.subclassverbose)
                 ss  = f'    {k:<{n}} : {sss}'
             s += ind + ss + '\n'
         return s[:-1]
