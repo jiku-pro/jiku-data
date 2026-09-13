@@ -144,6 +144,13 @@ class ParametersSPM1D(object):
         # self.inference_kwargs = {}
         self.inference_kwargs4 = {}     # inference arguments for spm1d v0.4
         self.inference_kwargs5 = {}     # inference arguments for spm1d v0.5
+        # Provenance of the stored expected results.  Every univariate 1D
+        # expectation in this package was computed with the smoothness
+        # estimator used in spm1d v0.4.x.  spm1d v0.5 changed its default to
+        # the unbiased (Kiebel 1999) estimator, which moves every 1D FWHM, so
+        # the stored values are reproduced by requesting the old estimator
+        # explicitly.  Set to None once expectations are regenerated.
+        self.fwhm_method       = 'spm1d-v04'
         
 
     def __repr__(self):
@@ -216,11 +223,51 @@ class ParametersSPM1D(object):
             import spm1d_v4.stats.c
             return eval(  f'spm1d_v4.stats.c.{self.testname}' )
 
+    def _fwhm_method_kwarg(self, fn):
+        '''Request the v0.4 smoothness estimator, but only where that is what
+        the stored expectation was computed with.
+
+        Only the UNIVARIATE estimator changed in v0.5; the multivariate default
+        ("taylor2008") is unchanged, and its functions accept the same keyword
+        with a different vocabulary.  So key off the function's own default
+        rather than off the test name.'''
+        import inspect
+        if self.fwhm_method is None:
+            return {}
+        # The "c" API wrappers have signature (y, x, **kwargs), so inspect the
+        # procedure they forward to -- spm1d.stats.<testname> -- and fall back
+        # to the wrapper itself where there is no such attribute.
+        target = fn
+        try:
+            if self._spm1dv in [None, 5]:
+                import spm1d.stats as _stats
+            else:
+                import spm1d_v4.stats as _stats
+            target = getattr(_stats, self.testname, fn)
+        except Exception:
+            pass
+        # spm1d wraps its procedures in the "appendargs" / "checkargs" decorator
+        # classes, whose __call__ is (*args, **kwargs); unwrap to the function
+        # underneath before inspecting.
+        for _ in range(8):
+            inner = getattr(target, 'f', None) or getattr(target, 'fn', None)
+            if inner is None:
+                break
+            target = inner
+        try:
+            p = inspect.signature( target ).parameters.get('_fwhm_method')
+        except (TypeError, ValueError):
+            return {}
+        if (p is None) or (p.default != 'taylor2007'):
+            return {}
+        return dict( _fwhm_method=self.fwhm_method )
+
     def run(self, kwargs={}, ikwargs={}, spm1d_version=None):
         self.set_spm1d_version( spm1d_version )
         fn = self.get_function()
         a0 = self.args
-        k0 = self.kwargs
+        k0 = dict( self.kwargs )
+        k0.update( self._fwhm_method_kwarg( fn ) )
         a1 = self.inference_args
         k1 = self.inference_kwargs
         k0.update( kwargs )
