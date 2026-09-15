@@ -262,6 +262,27 @@ class ParametersSPM1D(object):
             return {}
         return dict( _fwhm_method=self.fwhm_method )
 
+    # spm1d v0.4 spells the covariance model as a boolean "equal_var"; v0.5
+    # replaced it with "cov_model", which names a model rather than asserting a
+    # boolean and can therefore express models a boolean cannot.  The datasets
+    # declare the v0.5 vocabulary, and this translates back when the target is
+    # v0.4 -- so dropping v0.4 support later means deleting this method and
+    # changing nothing else.  v0.5 still accepts "equal_var" as a deprecated
+    # alias, but using it here would emit a deprecation warning once per
+    # dataset per run.
+    _cov_model_to_equal_var = {'iid': True, 'unstructured': False}
+
+    def _cov_model_kwarg(self, k):
+        if (self._spm1dv != 4) or ('cov_model' not in k):
+            return k
+        k  = dict( k )
+        cm = k.pop('cov_model')
+        if cm not in self._cov_model_to_equal_var:
+            raise ValueError(f'cov_model={cm!r} has no spm1d v0.4 equivalent; '
+                             f'v0.4 supports only {sorted(self._cov_model_to_equal_var)}.')
+        k['equal_var'] = self._cov_model_to_equal_var[cm]
+        return k
+
     def run(self, kwargs={}, ikwargs={}, spm1d_version=None):
         self.set_spm1d_version( spm1d_version )
         fn = self.get_function()
@@ -272,6 +293,7 @@ class ParametersSPM1D(object):
         k1 = self.inference_kwargs
         k0.update( kwargs )
         k1.update( ikwargs )
+        k0 = self._cov_model_kwarg( k0 )   # last, so a caller override translates too
         return fn( *a0 , **k0 ).inference(*a1, **k1)
 
 
