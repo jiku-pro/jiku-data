@@ -290,7 +290,11 @@ class ParametersSPM1D(object):
         k0 = dict( self.kwargs )
         k0.update( self._fwhm_method_kwarg( fn ) )
         a1 = self.inference_args
-        k1 = self.inference_kwargs
+        # COPY: "inference_kwargs" is a property handing back inference_kwargs4
+        # or inference_kwargs5 itself, so k1.update(ikwargs) below would mutate
+        # the dataset's stored kwargs and a second runtest with different
+        # ikwargs would inherit the first call's.
+        k1 = dict( self.inference_kwargs )
         k0.update( kwargs )
         k1.update( ikwargs )
         k0 = self._cov_model_kwarg( k0 )   # last, so a caller override translates too
