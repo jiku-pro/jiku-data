@@ -45,6 +45,9 @@ jobs:
       with:
         python-version: '3.x'
 
+    # NOTE: the version is read with tomllib, which is stdlib only from Python
+    # 3.11.  "3.x" above resolves to the newest stable, so this is fine -- but
+    # pinning python-version below 3.11 would break this step.
     - name: Is this version already on PyPI?
       id: version
       run: |
