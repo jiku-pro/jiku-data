@@ -72,6 +72,27 @@ class ExpectedResults(object):
 
 
 
+class ExpectedResultsList(list):
+    """
+    Several expected values for one dataset, compared on "z" alone.
+
+    The list counterpart of ExpectedResults, for a result that is a list --
+    a two-way ANOVA's effect sizes, one per effect.  "ExpectedResultsListSPM1D"
+    is the same idea for test results, which also carry df and p;  an effect
+    size has neither.
+    """
+
+    def __init__(self, z, STAT='Z'):
+        super().__init__()
+        self.STAT = STAT
+        self.tol  = Tolerance()
+        for zz in z:
+            e      = ExpectedResults()
+            e.STAT = STAT
+            e.z    = zz
+            self.append( e )
+
+
 class ExpectedResultsSPM1D(object):
 
     def __init__(self):

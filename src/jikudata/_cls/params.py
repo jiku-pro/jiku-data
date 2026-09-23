@@ -151,6 +151,19 @@ class ParametersSPM1D(object):
         # the stored values are reproduced by requesting the old estimator
         # explicitly.  Set to None once expectations are regenerated.
         self.fwhm_method       = 'spm1d-v04'
+        # What to ask the fitted SPM for.  None means the test result, via
+        # inference() -- what every dataset wanted until 2026-09-23.  Naming a
+        # method here instead lets a dataset carry an expectation about
+        # something OTHER than a test result, without ExpectedResults needing
+        # to know about it:  the base ExpectedResults compares "z" alone, and
+        # an effect size has a "z" like everything else.  Todd's design.
+        #
+        #     self.params.result = 'effect_size'
+        #
+        # The named method is called on the object the procedure returns,
+        # with result_kwargs, and inference() is not called at all.
+        self.result            = None
+        self.result_kwargs     = {}
         
 
     def __repr__(self):
@@ -298,7 +311,18 @@ class ParametersSPM1D(object):
         k0.update( kwargs )
         k1.update( ikwargs )
         k0 = self._cov_model_kwarg( k0 )   # last, so a caller override translates too
-        return fn( *a0 , **k0 ).inference(*a1, **k1)
+        out = fn( *a0 , **k0 )
+        if self.result is not None:
+            #  An expectation about something other than a test result:  ask
+            #  the fitted object for it and stop.  No inference is run, which
+            #  is the point -- an effect size is descriptive.
+            m = getattr(out, self.result, None)
+            if m is None:
+                raise AttributeError(
+                    '%r has no %r; the dataset asks for it via '
+                    'params.result.' % (type(out).__name__, self.result) )
+            return m( **dict(self.result_kwargs) )
+        return out.inference(*a1, **k1)
 
 
     def set_spm1d_version(self, v):
