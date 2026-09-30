@@ -72,6 +72,27 @@ class ExpectedResults(object):
 
 
 
+class ExpectedResultsList(list):
+    """
+    Several expected values for one dataset, compared on "z" alone.
+
+    The list counterpart of ExpectedResults, for a result that is a list --
+    a two-way ANOVA's effect sizes, one per effect.  "ExpectedResultsListSPM1D"
+    is the same idea for test results, which also carry df and p;  an effect
+    size has neither.
+    """
+
+    def __init__(self, z, STAT='Z'):
+        super().__init__()
+        self.STAT = STAT
+        self.tol  = Tolerance()
+        for zz in z:
+            e      = ExpectedResults()
+            e.STAT = STAT
+            e.z    = zz
+            self.append( e )
+
+
 class ExpectedResultsSPM1D(object):
 
     def __init__(self):
@@ -194,14 +215,14 @@ class ExpectedResultsSPM1D_1D(ExpectedResultsSPM1D):
 
     def assert_equal(self, spmi):
         import pytest
-        if self.fwhm != pytest.approx(spmi.fwhm, abs=self.tol.fwhm):
-            import warnings
-            msg = 'jikudata WARNING!  Changing FWHM from %.5f to %.5f and reconducting inference.\n' %(self.fwhm, spmi.fwhm)
-            warnings.warn(msg, UserWarning, stacklevel=2)
-            spmi.sm.fwhm   = self.fwhm
-            spmi.sm.resels = self.resels
-            spmi           = spmi.inference(0.05)
-
+        # NOTE: a previous version substituted the stored FWHM for the computed
+        # one and re-ran inference whenever the two disagreed.  That silently
+        # masked any change in smoothness estimation -- the one thing a stored
+        # expectation is there to detect -- and it could not work in any case,
+        # because spm1d v0.5's SPMi.inference raises NotImplementedError.  The
+        # provenance of the stored value is declared by
+        # ParametersSPM1D.fwhm_method instead, so a disagreement here is a real
+        # disagreement.
         assert self.z      == pytest.approx(spmi.z,      abs=self.tol.z)
         assert self.df     == pytest.approx(spmi.df,     abs=self.tol.df)
         assert self.fwhm   == pytest.approx(spmi.fwhm,   abs=self.tol.fwhm)

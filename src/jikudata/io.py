@@ -160,13 +160,21 @@ def load_expected_results_1d(fpath):
         else:
             from . _cls import ExpectedResultsListSPM1D_1D
             e             = ExpectedResultsListSPM1D_1D()
+            #  "fwhm" and "resels" may be stored once for the whole list or
+            #  once per effect.  Once was right while every effect in a design
+            #  shared the residual's smoothness;  the saturated repeated
+            #  measures designs estimate each effect's own error stratum, so
+            #  they differ per effect and the file has to say so.  Both
+            #  layouts load, so files written either way keep working.
+            fw, rs = d['fwhm'], d['resels']
+            per    = (np.ndim(fw) > 0) and (np.shape(fw)[0] == d['z'].shape[0])
             for i in range( d['z'].shape[0] ):
                 ee            = ExpectedResultsSPM1D_1D()
                 ee.STAT       = str( d['STAT'] )
                 ee.z          = d['z'][i]
                 ee.df         = tuple( d['df'][i] )
-                ee.fwhm       = float( d['fwhm'] )
-                ee.resels     = tuple( d['resels'] )
+                ee.fwhm       = float( fw[i] ) if per else float( fw )
+                ee.resels     = tuple( rs[i] ) if per else tuple( rs )
                 ee.zc         = float( d['zc'][i] )
                 ee.clusters   = list( d['clusters'][i] )
                 e.append( ee )

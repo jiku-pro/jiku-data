@@ -1,0 +1,121 @@
+name: notify-spm1dv5
+
+#  Asks spm1dv5 to test this commit's datasets, and waits for the answer.
+#
+#  The tests themselves live in spm1dv5 (tests/jiku-data/).  This workflow
+#  marks the commit's "spm1dv5 tests" status as pending, sends spm1dv5 a
+#  "repository_dispatch" event carrying the pushed commit, then polls that
+#  status until spm1dv5's test_jiku_data.yml posts its result.  This run then
+#  passes or fails with the tests, so the outcome shows in the Actions tab.
+#
+#  Secret:  SPM1DV5_DISPATCH_TOKEN -- a fine-grained token limited to
+#  0todd0000/spm1dv5, with "Contents: read and write" (the permission GitHub
+#  requires for sending repository_dispatch).  Setting and reading this
+#  commit's status uses the default token.
+
+on:
+  push:
+    branches: [ main, v05dev, feature/** ]
+  workflow_dispatch:
+
+
+jobs:
+  notify-job:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    permissions:
+      statuses: write     # set and read this commit's status with the default token
+
+    steps:
+
+    - name: Set spm1dv5 tests as pending
+      env:
+        GH_TOKEN: ${{ github.token }}
+        SHA: ${{ github.sha }}
+      run: |
+        curl -fsS -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer $GH_TOKEN" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          "https://api.github.com/repos/${{ github.repository }}/statuses/$SHA" \
+          -d '{"state":"pending","context":"spm1dv5 tests","description":"requested"}'
+
+    - name: Send repository_dispatch to spm1dv5
+      id: dispatch
+      env:
+        TOKEN: ${{ secrets.SPM1DV5_DISPATCH_TOKEN }}
+        SHA: ${{ github.sha }}
+        REF: ${{ github.ref_name }}
+      run: |
+        curl -fsS -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer $TOKEN" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/0todd0000/spm1dv5/dispatches \
+          -d "{\"event_type\":\"jiku-data-push\",\"client_payload\":{\"sha\":\"$SHA\",\"ref\":\"$REF\"}}"
+
+    #  Polls this commit's "spm1dv5 tests" status every 20 s until it is no
+    #  longer pending, or until TIMEOUT_MIN.  Passes only if the tests passed.
+    - name: Waiting for spm1dv5 test results
+      id: wait
+      env:
+        GH_TOKEN: ${{ github.token }}
+        SHA: ${{ github.sha }}
+        REPO: ${{ github.repository }}
+        TIMEOUT_MIN: '30'
+      run: |
+        python3 - <<'PY'
+        import json, os, sys, time, urllib.request
+
+        url = 'https://api.github.com/repos/%s/commits/%s/status' % (os.environ['REPO'], os.environ['SHA'])
+        hdr = {'Accept': 'application/vnd.github+json',
+               'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+               'X-GitHub-Api-Version': '2022-11-28'}
+        deadline = time.time() + 60 * int(os.environ['TIMEOUT_MIN'])
+        state, link, desc = 'timeout', '', ''
+
+        while time.time() < deadline:
+            try:
+                with urllib.request.urlopen(urllib.request.Request(url, headers=hdr), timeout=30) as r:
+                    data = json.load(r)
+                s = next((x for x in data.get('statuses', []) if x.get('context') == 'spm1dv5 tests'), None)
+                if (s is not None) and (s.get('state') != 'pending'):
+                    state = s['state']
+                    link  = s.get('target_url') or ''
+                    desc  = s.get('description') or ''
+                    break
+            except Exception as e:           # a transient API error is not a result
+                print('status check failed, retrying:', e)
+            time.sleep(20)
+
+        if state == 'timeout':
+            desc = 'no result from spm1dv5 within %s min' % os.environ['TIMEOUT_MIN']
+
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write('result=%s\n' % state)
+        with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+            f.write('## spm1dv5 tests: %s\n\n%s\n' % (state, desc))
+            if link:
+                f.write('\n[spm1dv5 run](%s)\n' % link)
+        print('spm1dv5 tests:', state, '--', desc, link)
+        sys.exit(0 if state == 'success' else 1)
+        PY
+
+    #  Only when no result will ever arrive:  the request never reached
+    #  spm1dv5, or spm1dv5 did not answer in time.  Without this the commit
+    #  would stay "pending" forever.  A test FAILURE is left as spm1dv5 set it.
+    - name: Set spm1dv5 tests as errored if no result arrives
+      if: always() && (steps.dispatch.outcome == 'failure' || steps.wait.outputs.result == 'timeout')
+      env:
+        GH_TOKEN: ${{ github.token }}
+        SHA: ${{ github.sha }}
+        TIMED_OUT: ${{ steps.wait.outputs.result == 'timeout' }}
+      run: |
+        if [ "$TIMED_OUT" = "true" ]; then DESC="no result from spm1dv5"; else DESC="could not reach spm1dv5"; fi
+        curl -fsS -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer $GH_TOKEN" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          "https://api.github.com/repos/${{ github.repository }}/statuses/$SHA" \
+          -d "{\"state\":\"error\",\"context\":\"spm1dv5 tests\",\"description\":\"$DESC\"}"
