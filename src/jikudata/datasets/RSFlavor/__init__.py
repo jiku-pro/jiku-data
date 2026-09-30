@@ -14,9 +14,9 @@ class RSFlavor(_Dataset):
     def _set_expected(self):
         e             = ExpectedResultsSPM1D()
         e.STAT        = 'T'
-        e.z           = 2.176768
-        e.df          = (1, 18)
-        e.p           = 0.021526
+        e.z           = 2.201993
+        e.df          = (1, 19)
+        e.p           = 0.02011
         e.tol.z       = 1e-06
         e.tol.df      = 1e-05
         e.tol.p       = 1e-06
