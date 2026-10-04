@@ -1,82 +1,74 @@
 name: push_pypi
 
-# Releases are gated on the version CHANGING, not merely on the tests passing.
+# Releases are made by pushing a version tag, and by nothing else.
 #
-# The trigger is still a successful "pytest" run on main, so a release is still
-# "bump the version and push".  What changed is that every OTHER push to main --
-# a docstring fix, a new dataset, a refactor -- no longer attempts an upload.
-# Previously any green run tried to publish, and because PyPI refuses a
-# duplicate version and this workflow set no "skip-existing", the attempt failed
-# the run rather than skipping it.  A red CI badge for a commit that was never
-# meant to be a release.
+# A release is:  bump the version in pyproject.toml, commit, then
 #
-# The checkout is also pinned to the commit that was TESTED.  A workflow_run job
-# checks out the default branch by default, not the revision that triggered it,
-# so without head_sha a fast follow-up push could publish a commit that the
-# passing test run never saw.
+#     git tag v0.1.12
+#     git push origin v0.1.12
+#
+# Pushing to main -- a new dataset, a docstring fix, a refactor, even a commit
+# that happens to change the version string -- never uploads anything.  The
+# previous trigger (a green "pytest" run on main with a new version) made the
+# version bump itself the release, so an unintended bump on main became an
+# unintended PyPI release.  A tag is an explicit, separate act.
+#
+# The tag must match the version in pyproject.toml ("v" + version), or the run
+# fails before building.  The tests are run here too, against the tagged
+# commit, so a tag on an untested commit cannot be released.
 
 on:
-  workflow_run:
-    workflows: ["pytest"]
-    branches: [ main ]
-    types:
-      - completed
+  push:
+    tags: [ 'v*' ]
 
 
 jobs:
   publish-pypi:
     runs-on: ubuntu-latest
 
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
     permissions:
       contents: read
       id-token: write
 
     steps:
-    - name: Checkout the tested commit
+    - name: Checkout the tagged commit
       uses: actions/checkout@v5
       with:
-        ref: ${{ github.event.workflow_run.head_sha }}
         persist-credentials: false
 
     - name: Set up Python
       uses: actions/setup-python@v6
       with:
-        python-version: '3.x'
+        python-version: '3.12'
 
-    # NOTE: the version is read with tomllib, which is stdlib only from Python
-    # 3.11.  "3.x" above resolves to the newest stable, so this is fine -- but
-    # pinning python-version below 3.11 would break this step.
-    - name: Is this version already on PyPI?
-      id: version
+    # NOTE: the version is read with tomllib, which is stdlib only from
+    # Python 3.11; pinning python-version below 3.11 would break this step.
+    - name: Check that the tag matches the package version
       run: |
         set -euo pipefail
         V=$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")
-        echo "version=$V" >> "$GITHUB_OUTPUT"
+        TAG="${GITHUB_REF_NAME}"
+        if [ "$TAG" != "v$V" ]; then
+          echo "tag $TAG does not match pyproject.toml version $V"; exit 1
+        fi
         CODE=$(curl -s -o /dev/null -w '%{http_code}' "https://pypi.org/pypi/jiku-data/$V/json")
         if [ "$CODE" = "200" ]; then
-          echo "published=true" >> "$GITHUB_OUTPUT"
-          echo "jiku-data $V is already on PyPI; nothing to release."
-        else
-          echo "published=false" >> "$GITHUB_OUTPUT"
-          echo "jiku-data $V is not on PyPI; releasing."
+          echo "jiku-data $V is already on PyPI"; exit 1
         fi
+        echo "releasing jiku-data $V"
 
-    - name: Install build dependencies
-      if: steps.version.outputs.published == 'false'
-      run: >-
-        python3 -m
-        pip install
-        build
-        --user
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt build
+
+    - name: Tests
+      run: |
+        export PYTHONPATH="src"
+        pytest tests
 
     - name: Build
-      if: steps.version.outputs.published == 'false'
       run: python -m build
 
     - name: Publish to pypi
-      if: steps.version.outputs.published == 'false'
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        skip-existing: true
