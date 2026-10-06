@@ -43,3 +43,10 @@ def test_dataset_loads_with_finite_arguments(dataset):
 
 def test_loading_every_dataset_imports_no_statistics_package():
     assert 'spm1d' not in sys.modules
+
+
+@pytest.mark.parametrize( 'dataset', DATASETS, ids=lambda d: d.name )
+def test_every_dataset_has_a_repr(dataset):
+    '''print( dataset ) must work for every entry, data-only ones included.'''
+    s = repr( dataset )
+    assert dataset.name in s

@@ -53,7 +53,7 @@ class DisplayParams(list):
             else:
                 k   = a
                 v   = getattr(self.obj, k)
-                sss = v.asstr(indent=2, verbose=self.subclassverbose)
+                sss = 'None' if (v is None) else v.asstr(indent=2, verbose=self.subclassverbose)
                 ss  = f'    {k:<{n}} : {sss}'
             s += ind + ss + '\n'
         return s[:-1]

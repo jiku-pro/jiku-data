@@ -92,6 +92,9 @@ class ExpectedResultsList(list):
             e.z    = zz
             self.append( e )
 
+    def asstr(self, indent=None, verbose=None):
+        return f'[List of {len(self)} ExpectedResults objects]'
+
 
 class ExpectedResultsSPM1D(object):
 

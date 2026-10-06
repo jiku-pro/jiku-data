@@ -24,6 +24,9 @@ spm1d_descriptions = {
     'hotellings2'       : "Two-sample Hotelling's T2-test",
     'hotellings_paired' : "Paired Hotelling's T2-test",
     'manova1'           : 'One-way MANOVA',
+    'manova2'           : 'Two-way MANOVA',
+    'manova3'           : 'Three-way MANOVA',
+    'mancova'           : 'One-way MANCOVA',
 
     'ci_onesample'      : 'One-sample confidence interval',
     'ci_pairedsample'   : 'Paired-sample confidence interval',
@@ -198,7 +201,7 @@ class ParametersSPM1D(object):
         return self.testname.endswith('rm')
     @property
     def test_description(self):
-        return spm1d_descriptions[ self.testname ]
+        return spm1d_descriptions.get( self.testname, self.testname )
 
 
     def get_exec_str(self, dataset, aslist=False):
