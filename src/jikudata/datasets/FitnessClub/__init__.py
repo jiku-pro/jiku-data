@@ -12,10 +12,16 @@ class FitnessClub(_Dataset):
 
     def _set_expected(self):
         e             = ExpectedResultsSPM1D()
-        e.STAT        = 'X2'
-        e.z           = 5.1458
-        e.df          = (1, 3)
-        e.p           = 0.1614
+        #  SAS PROC CANCORR reports the likelihood ratio (Wilks' lambda,
+        #  1 - r2 = 0.7321) with its F, exact for one predictor:
+        #  F = r2 / (1 - r2) * (J - 1 - I) / I = 1.95 on (3, 16) df, p = 0.1620.
+        #  spm1d v0.5 reports that F;  the earlier expectation here was the
+        #  Bartlett chi-square 5.1458 (df 3, p 0.1614), still available as
+        #  "spm.fit.wilks_x2".
+        e.STAT        = 'F'
+        e.z           = 1.95185
+        e.df          = (3, 16)
+        e.p           = 0.161979
         e.tol.z       = 0.0001
         e.tol.df      = 1e-05
         e.tol.p       = 0.0001

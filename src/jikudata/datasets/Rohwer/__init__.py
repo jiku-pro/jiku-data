@@ -12,10 +12,9 @@ response columns follow.
 
 The expected value follows from the Wilks' lambda for SES reported by
 R's car::Anova( lm( cbind(SAT, PPVT, Raven) ~ SES + n + s + ns + na + ss ), test='Wilks' ),
-0.62147 (Pillai 0.37853, F(3,60) = 12.1818, p = 2.507e-06 in R's F
-approximation), through Bartlett's chi-square approximation
-X2 = -(df_e - (c - I + 1)/2) ln(lambda), with c = 3 responses, I = 1 and
-df_e = 62.  The tolerance covers the rounding of lambda to five decimals.
+0.62147 (Pillai 0.37853), through Rao's F, exact here with one df:
+F(3, 60) = 12.1818, p = 2.507e-06, as R prints.  The tolerance covers the
+rounding of lambda to five decimals.
 '''
 
 
@@ -27,13 +26,13 @@ class Rohwer(_Dataset):
         self.notes      = _notes
 
     def _set_expected(self):
-        z             = (28.777892,)
-        df            = ((1, 3),)
-        p             = (2.49346e-06,)
-        e             = ExpectedResultsListSPM1D('X2', z, df, p)
-        e.tol.z       = 0.001
+        z             = (12.18176,)
+        df            = ((3, 60.0),)
+        p             = (2.50682e-06,)
+        e             = ExpectedResultsListSPM1D('F', z, df, p)
+        e.tol.z       = 0.0003
         e.tol.df      = 1e-5
-        e.tol.p       = 1e-09
+        e.tol.p       = 7e-10
         self.expected = e
 
     def _set_params(self):
