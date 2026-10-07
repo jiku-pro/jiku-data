@@ -19,6 +19,8 @@ spm1d_descriptions = {
     'anova3onerm'       : 'Three-way ANOVA (repeated measures on one factor)',
     'anova3tworm'       : 'Three-way ANOVA (repeated measures on two factors)',
 
+    'ancova'            : 'One-way ANCOVA',
+
     'cca'               : 'Canonical correlation analysis',
     'hotellings'        : "One-sample Hotelling's T2-test",
     'hotellings2'       : "Two-sample Hotelling's T2-test",
