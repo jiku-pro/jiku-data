@@ -42,5 +42,25 @@ dependencies = [
 
 
 [build-system]
-requires      = ["setuptools>=60", "setuptools-scm>=8.0"]
+requires      = ["setuptools>=64", "setuptools-scm>=8.0"]
 build-backend = "setuptools.build_meta"
+
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where      = ["src"]
+namespaces = true
+
+# Dataset payloads.  These MUST be declared explicitly: without them the wheel
+# contains only .py files unless setuptools-scm happens to be installed AND the
+# build runs inside a git checkout.
+[tool.setuptools.package-data]
+"*" = [
+    "*.csv",          # datasets/<Name>/data.csv
+    "*.npz",          # datasets/<Name>/expected_results.npz
+    "*.md",           # datasets/<Name>/README.md
+    "data_x/*.csv",   # datasets/SpeedPP2D[S]/data_x/
+    "data_y/*.h5",    # datasets/SpeedPP2D[S]/data_y/
+]

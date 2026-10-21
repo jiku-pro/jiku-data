@@ -6,9 +6,9 @@ from ... _cls import _Dataset
 
 class SpeedPP2DS(_Dataset):
 
-    def __init__(self, subj=None):
+    def __init__(self, subj=None, _load_data=True):
         self._subj      = subj
-        super().__init__()
+        super().__init__( _load_data=_load_data )
     
     @staticmethod
     def _loadh5( fpath ):
@@ -28,7 +28,9 @@ class SpeedPP2DS(_Dataset):
         self.www        = 'https://doi.org/10.1016/j.jbiomech.2008.03.034'
         self.notes      = None
 
-    def _set_data(self):
+    def _set_data(self, _load_data=True):
+        if not _load_data:
+            return
         import os
         dir0         = os.path.dirname(__file__)
         dir_x        = os.path.join( dir0, 'data_x' )

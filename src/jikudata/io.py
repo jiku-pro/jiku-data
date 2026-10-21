@@ -177,5 +177,11 @@ def load_expected_results_1d(fpath):
                 ee.resels     = tuple( rs[i] ) if per else tuple( rs )
                 ee.zc         = float( d['zc'][i] )
                 ee.clusters   = list( d['clusters'][i] )
+                for c in ee.clusters:
+                    for k,v in c.items():
+                        if isinstance(v, tuple):
+                            c[k] = tuple( map(float, v) )
+                        else:
+                            c[k] = float(v)
                 e.append( ee )
     return e
