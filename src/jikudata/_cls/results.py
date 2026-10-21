@@ -124,7 +124,7 @@ class ExpectedResultsListSPM1D(list):
 
     def __init__(self, STAT, z, v, p):
         super().__init__()
-        self.STAT     = 'F'
+        self.STAT     = STAT
         self.tol      = ToleranceSPM1D()
         for zz,vv,pp in zip(z, v, p):
             e      = ExpectedResultsSPM1D()
@@ -142,6 +142,7 @@ class ToleranceSPM1D_1D(object):  # absolite tolerance (for unit tests)
     def __init__(self):
         self.z                 = 1e-5
         self.df                = 1e-5
+        self.p                 = 1e-5
         self.fwhm              = 1e-5
         self.resels            = 1e-5
         self.zc                = 1e-5
@@ -157,6 +158,7 @@ class ToleranceSPM1D_1D(object):  # absolite tolerance (for unit tests)
         dp      = DisplayParams( self, default_header=True )
         dp.add( 'z' )
         dp.add( 'df' )
+        dp.add( 'p' )
         dp.add( 'fwhm' )
         dp.add( 'resels' )
         dp.add( 'zc' )
@@ -173,7 +175,7 @@ class ExpectedResultsSPM1D_1D(ExpectedResultsSPM1D):
         self.STAT     = 'Z'    # test statistic
         self.z        = None   # expected test stat
         self.df       = None   # expected degrees of freedom
-        self.fhwm     = None   # expected smoothness
+        self.fwhm     = None   # expected smoothness
         self.resels   = None   # expected resel counts
         self.zc       = None   # expected critical threshold
         self.clusters = None
