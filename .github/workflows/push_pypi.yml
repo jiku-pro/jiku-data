@@ -1,74 +1,74 @@
 name: push_pypi
 
-# on:
-#   push:
-#     branches: [ main ]
+# Releases are made by pushing a version tag, and by nothing else.
+#
+# A release is:  bump the version in pyproject.toml, commit, then
+#
+#     git tag v0.1.12
+#     git push origin v0.1.12
+#
+# Pushing to main -- a new dataset, a docstring fix, a refactor, even a commit
+# that happens to change the version string -- never uploads anything.  The
+# previous trigger (a green "pytest" run on main with a new version) made the
+# version bump itself the release, so an unintended bump on main became an
+# unintended PyPI release.  A tag is an explicit, separate act.
+#
+# The tag must match the version in pyproject.toml ("v" + version), or the run
+# fails before building.  The tests are run here too, against the tagged
+# commit, so a tag on an untested commit cannot be released.
 
 on:
-  workflow_run:
-    workflows: ["pytest"]
-    branches: [ main ]
-    types: 
-      - completed
+  push:
+    tags: [ 'v*' ]
 
 
 jobs:
   publish-pypi:
     runs-on: ubuntu-latest
 
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
     permissions:
       contents: read
       id-token: write
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - name: Checkout the tagged commit
+      uses: actions/checkout@v5
       with:
-              persist-credentials: false
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.x'
+        persist-credentials: false
 
-    - name: Install build dependencies
-      run: >-
-        python3 -m
-        pip install
-        build
-        --user
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.12'
+
+    # NOTE: the version is read with tomllib, which is stdlib only from
+    # Python 3.11; pinning python-version below 3.11 would break this step.
+    - name: Check that the tag matches the package version
+      run: |
+        set -euo pipefail
+        V=$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")
+        TAG="${GITHUB_REF_NAME}"
+        if [ "$TAG" != "v$V" ]; then
+          echo "tag $TAG does not match pyproject.toml version $V"; exit 1
+        fi
+        CODE=$(curl -s -o /dev/null -w '%{http_code}' "https://pypi.org/pypi/jiku-data/$V/json")
+        if [ "$CODE" = "200" ]; then
+          echo "jiku-data $V is already on PyPI"; exit 1
+        fi
+        echo "releasing jiku-data $V"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt build
+
+    - name: Tests
+      run: |
+        export PYTHONPATH="src"
+        pytest tests
 
     - name: Build
       run: python -m build
 
-    - name: Store the distribution packages
-      uses: actions/upload-artifact@v4
-      with:
-        name: python-package-distributions
-        path: dist/
-        
-    - name: Download all the dists
-      uses: actions/download-artifact@v4
-      with:
-        name: python-package-distributions
-        path: dist/
-    
     - name: Publish to pypi
       uses: pypa/gh-action-pypi-publish@release/v1
-
-
-# name: Release
-# on:
-#   workflow_run:
-#     workflows: ["Run Tests"]
-#     branches: [main]
-#     types:
-#       - completed
-
-# jobs:
-#   on-success:
-#     runs-on: ubuntu-latest
-#     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-#     steps:
-#       - run: echo 'The Run Tests workflow passed'

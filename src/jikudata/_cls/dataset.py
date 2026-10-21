@@ -82,8 +82,8 @@ class _Dataset(metaclass=ABCMeta):
     
     @property
     def design(self):
-        # None for datasets that do not (yet) define reproduction parameters
-        return None if (self.params is None) else self.params.test_description
+        return None if (self.params is None) else self.params.test_description   # a data-only entry has no analysis
+        # return self.params.description
 
     @property
     def hasdatafile(self):

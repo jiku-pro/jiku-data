@@ -29,7 +29,7 @@ class SPM1D_ANOVA2_2x3(_Dataset):
         self.params.testname         = 'anova2'
         self.params.args             = self.y, self.x
         self.params.inference_args   = (0.05,)
-        self.params.kwargs            = dict(equal_var=True)
+        self.params.kwargs            = dict(cov_model='iid')
         self.params.inference_kwargs4 = dict()
         self.params.inference_kwargs5 = dict(method='rft')
         
