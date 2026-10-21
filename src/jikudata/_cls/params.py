@@ -135,6 +135,7 @@ spm1d_descriptions = {
 
 class ParametersSPM1D(object):
     def __init__(self):
+        self._spm1dv          = None   # spm1d major version override (None, 4 or 5)
         self.packagename      = 'spm1d'
         self.packageroot      = 'spm1d.stats.c'
         self.testname         = None   # spm1d.stats function name
@@ -168,8 +169,10 @@ class ParametersSPM1D(object):
             v = int( spm1d.__version__.split('.')[1] )
         if v==4:
             return self.inference_kwargs4
-        elif v == 5:
+        elif v==5:
             return self.inference_kwargs5
+        else:
+            raise ValueError( f'Unsupported spm1d version: 0.{v}.  Only spm1d v0.4 and v0.5 are supported.' )
     @property
     def ikwargs(self):
         return self.inference_kwargs
@@ -211,18 +214,21 @@ class ParametersSPM1D(object):
     def get_function(self):
         if self._spm1dv in [None, 5]:
             import spm1d.stats.c
-            return eval(  f'spm1d.stats.c.{self.testname}' )
+            return getattr( spm1d.stats.c, self.testname )
         elif self._spm1dv==4:
             import spm1d_v4.stats.c
-            return eval(  f'spm1d_v4.stats.c.{self.testname}' )
+            return getattr( spm1d_v4.stats.c, self.testname )
+        else:
+            raise ValueError( f'Unsupported spm1d version: 0.{self._spm1dv}.  Only spm1d v0.4 and v0.5 are supported.' )
 
     def run(self, kwargs={}, ikwargs={}, spm1d_version=None):
         self.set_spm1d_version( spm1d_version )
         fn = self.get_function()
         a0 = self.args
-        k0 = self.kwargs
         a1 = self.inference_args
-        k1 = self.inference_kwargs
+        # copy so that per-call overrides do not mutate this object's stored parameters
+        k0 = dict( self.kwargs )
+        k1 = dict( self.inference_kwargs )
         k0.update( kwargs )
         k1.update( ikwargs )
         return fn( *a0 , **k0 ).inference(*a1, **k1)
