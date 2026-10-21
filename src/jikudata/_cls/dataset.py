@@ -64,9 +64,6 @@ class _Dataset(metaclass=ABCMeta):
     @abstractmethod
     def _set_params(self):    # parameters for reproducing results in an external package (e.g. spm1d)
         pass
-    @abstractmethod
-    def get_exec_str(self, aslist=False):  # get executable string to reproduce expected results
-        return self.params.get_exec_str( self, aslist=aslist )
 
     def _set_data(self, _load_data=True):
         if _load_data and (self.datafile is not None):
@@ -85,8 +82,8 @@ class _Dataset(metaclass=ABCMeta):
     
     @property
     def design(self):
-        return self.params.test_description
-        # return self.params.description
+        # None for datasets that do not (yet) define reproduction parameters
+        return None if (self.params is None) else self.params.test_description
 
     @property
     def hasdatafile(self):
@@ -99,13 +96,15 @@ class _Dataset(metaclass=ABCMeta):
         return self.cite is not None
     @property
     def ismultivariate(self):
-        return not self.isunivariate
+        uv = self.isunivariate
+        return None if (uv is None) else (not uv)
     @property
     def ismv(self):
         return self.ismultivariate
     @property
     def isunivariate(self):
-        return (self.y.ndim - self.dim) == 1
+        # None when the data have not been loaded (e.g. _load_data=False)
+        return None if (self.y is None) else ((self.y.ndim - self.dim) == 1)
     @property
     def isuv(self):
         return self.isunivariate
@@ -135,15 +134,17 @@ class _Dataset(metaclass=ABCMeta):
         a = []
         a.append( ('name', self.name) )
         a.append( ('dim', self.dim) )
-        a.append( ('STAT', self.expected.STAT) )
-        a.append( ('fnname', self.params.fnname) )
-        a.append( ('test_description', self.params.test_description) )
+        a.append( ('STAT', None if (self.expected is None) else self.expected.STAT) )
+        a.append( ('fnname', None if (self.params is None) else self.params.fnname) )
+        a.append( ('test_description', self.design) )
         a.append( ('y', array2shortstr(self.y)) )
         a.append( ('x', array2shortstr(self.x)) )
         return a
 
-    def get_exec_str(self, full=True, aslist=False):
-        return self.params.get_exec_str(self)
+    def get_exec_str(self, aslist=False):
+        if self.params is None:
+            raise NotImplementedError( f'{self.name} does not define reproduction parameters.' )
+        return self.params.get_exec_str(self, aslist=aslist)
 
 
     def open_links(self):   # open link in default web browser
