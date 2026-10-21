@@ -21,6 +21,8 @@ def link( path ):
             exec( f'this.{s} = module.{s}' )
 
 
-def get_dataset_by_name(name):
-    dataset = eval( f'{name}()' )
-    return dataset
+def get_dataset_by_name(name, **kwargs):
+    from . import datasets as _datasets
+    if name not in _datasets.__all__:
+        raise ValueError( f'Unknown dataset name: {name!r}' )
+    return getattr( _datasets, name )( **kwargs )

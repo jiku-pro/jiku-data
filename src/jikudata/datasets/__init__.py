@@ -8,7 +8,8 @@ for s in sorted( os.listdir( os.path.dirname(__file__) ) ):
     if s[0].isupper():
         exec(  f'from . {s} import {s}' )
         __all__.append( s )
-del os, s
+del os
+del s
 
 
 _skip = ['SpeedPP2DS']
