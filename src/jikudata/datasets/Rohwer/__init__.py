@@ -1,5 +1,5 @@
 
-from ... _cls import _Dataset, ExpectedResultsListSPM1D, ParametersSPM1D
+from ... _cls import _Dataset, ExpectedResultsSPM1D, ParametersSPM1D
 
 
 _notes = '''
@@ -26,10 +26,13 @@ class Rohwer(_Dataset):
         self.notes      = _notes
 
     def _set_expected(self):
-        z             = (12.18176,)
-        df            = ((3, 60.0),)
-        p             = (2.50682e-06,)
-        e             = ExpectedResultsListSPM1D('F', z, df, p)
+        #  mancova returns a single SPM (one effect), so the expectation is a
+        #  single result, not a one-item list
+        e             = ExpectedResultsSPM1D()
+        e.STAT        = 'F'
+        e.z           = 12.18176
+        e.df          = (3, 60.0)
+        e.p           = 2.50682e-06
         e.tol.z       = 0.0003
         e.tol.df      = 1e-5
         e.tol.p       = 7e-10

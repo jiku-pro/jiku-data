@@ -183,6 +183,10 @@ class _Dataset(metaclass=ABCMeta):
     def runtest(self, verbose=True, kwargs={}, ikwargs={}, spm1d_version=None):
         results  = self.params.run(kwargs=kwargs, ikwargs=ikwargs, spm1d_version=spm1d_version)
         if isinstance(self.expected, list):
+            if (len(self.expected) == 1) and not isinstance(results, (list, tuple)):
+                #  a one-item expectation for a procedure that returns a single
+                #  result (e.g. mancova in spm1d v0.5)
+                results = [results]
             for e,r in zip(self.expected, results):
                 e.tol = self.expected.tol
                 if verbose:
